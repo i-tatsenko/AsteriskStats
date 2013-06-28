@@ -81,7 +81,7 @@ public class AsteriskStats {
 			System.out.println(keys + ": " + db.get(keys)/60 + " minutes");
 		}*/
 		
-		DbProcessor dbProc = new DbProcessor(new File(System.getenv("HOME") + "/settings.xml"));
+		DbProcessor dbProc = new DbProcessor(new File(System.getenv("HOME") + "/.AsteriskStats/settings.xml"));
 	}
 }
 
