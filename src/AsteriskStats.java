@@ -36,21 +36,17 @@ public class AsteriskStats {
 	
 	public static void resSetToHash(ResultSet rs, HashMap<String, Integer> db){
 		try {
-			zvonok call = new zvonok();
+			Call call = new Call();
 		while (rs.next()){
-			call.SRC = rs.getString(3);
-			call.DST = rs.getString(4);
-			call.LASTAPP = rs.getString(8);
-			call.DURATION = rs.getInt(10);
-			if ((call.SRC.length() == 3) && (call.LASTAPP.equals("Dial")) && (call.SRC.charAt(0)=='1') && (call.DST.length()>8) ){ 
-				// �������: ����� ��������� ������ 3 �����(������ �� �����); ������="Dial" - ����� ������, ����� �����������; ����� ��������� ���������� � 1 (��� ����);
-				//�����, ���� ������, �������� ������ 8 ������ (���������� ������ ���������)
-				if (db.containsKey(call.SRC)){
+			call.SRC = rs.getString(2);
+			call.DST = rs.getString(1);
+			call.DURATION = rs.getInt(3);
+			if (db.containsKey(call.SRC)){
 					db.put(call.SRC, db.get(call.SRC) + call.DURATION);
 				}else{
 					db.put(call.SRC, call.DURATION);
 				}
-			}
+			
 		}
 		}catch (SQLException e){
 			ExceptionHandler.ErrorOutput(e, System.out);
@@ -81,20 +77,24 @@ public class AsteriskStats {
 			System.out.println(keys + ": " + db.get(keys)/60 + " minutes");
 		}*/
 		
+		CallFilter cf = new CallFilter();
+		cf.setDstFilter("[90]________%");
+		cf.setSrcFilter("1__");
+		cf.setDurationFilter(10);
+		cf.setCallsPeriod(PeriodToString.today());
+		
 		DbProcessor dbProc = new DbProcessor(new File(System.getenv("HOME") + "/.AsteriskStats/settings.xml"));
+		ResultSet rs = dbProc.outQuery("dst, src, duration", "cdr", cf.toString());
+		
+		HashMap<String, Integer> db = new HashMap<String, Integer>();
+		resSetToHash(rs, db);
+		for (String keys:db.keySet()){
+			System.out.println(keys + ": " + db.get(keys)/60 + " minutes");
+		}
+
 	}
 }
 
-class zvonok{
-	String SRC;
-	String DST;
-	int DURATION;
-	String LASTAPP;
-	
-	public String toString(){
-		String out = "SRC: " + this.SRC + " DST: " + this.DST + " DIAL STATE: " + this.LASTAPP; 
-		return out;
-	}
-}
+
 
 

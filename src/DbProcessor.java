@@ -51,13 +51,16 @@ public class DbProcessor {
 		}catch (SQLException e){
 			
 		}
-		
+		System.out.print("Connection established");
 		return conn;
 	}
 	
-	public  ResultSet outQuery(String sql_query){
+	public  ResultSet outQuery(String columns, String baseName, String filter){
 		try{
-			return getMysqlConnect().createStatement().executeQuery(sql_query);
+			return getMysqlConnect().createStatement().executeQuery("SELECT " + columns +  
+																	" FROM " +	baseName + 
+																	" WHERE" + filter);
+			
 		}catch (SQLException e){
 			ExceptionHandler.ErrorOutput(e, System.out); 
 		}

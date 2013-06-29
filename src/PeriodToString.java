@@ -4,47 +4,55 @@ public class PeriodToString{
 	private Calendar DATE_TO;
 	private Calendar DATE_FROM;
 	
-	public String daysAgo(Integer days){
-		this.DATE_TO = Calendar.getInstance();
-		this.DATE_FROM = Calendar.getInstance();
-		this.DATE_FROM.add(Calendar.DAY_OF_MONTH, -(days));
+	private PeriodToString(){
 		
-		return stringGenerate();
 	}
 	
-	public String thisMonth(){
-		this.DATE_TO = Calendar.getInstance();
-		this.DATE_FROM = Calendar.getInstance();
-		this.DATE_FROM.set(Calendar.DAY_OF_MONTH, 1);
+	public static PeriodToString daysAgo(Integer days){
+		PeriodToString period = new PeriodToString();
+		period.DATE_TO = Calendar.getInstance();
+		period.DATE_FROM = Calendar.getInstance();
+		period.DATE_FROM.add(Calendar.DAY_OF_MONTH, -(days));
 		
-		return stringGenerate();
+		return period;
 	}
 	
-	public String month(Integer i){
-		this.DATE_TO = Calendar.getInstance();
-		this.DATE_FROM = Calendar.getInstance();
-		this.DATE_TO.set(Calendar.MONTH, i-1);
-		this.DATE_TO.set(Calendar.DAY_OF_MONTH, this.DATE_TO.getActualMaximum(Calendar.DAY_OF_MONTH));
+	public static PeriodToString thisMonth(){
+		PeriodToString period = new PeriodToString();
+		period.DATE_TO = Calendar.getInstance();
+		period.DATE_FROM = Calendar.getInstance();
+		period.DATE_FROM.set(Calendar.DAY_OF_MONTH, 1);
 		
-		this.DATE_FROM.set(Calendar.MONTH, i-1);
-		this.DATE_FROM.set(Calendar.DAY_OF_MONTH, 1);
-		
-		return stringGenerate();
+		return period;
 	}
 	
-	public String today(){
-		this.DATE_FROM = Calendar.getInstance();
-		this.DATE_TO = Calendar.getInstance();
-		return stringGenerate();
+	public static PeriodToString month(Integer i){
+		PeriodToString period = new PeriodToString();
+		period.DATE_TO = Calendar.getInstance();
+		period.DATE_FROM = Calendar.getInstance();
+		period.DATE_TO.set(Calendar.MONTH, i-1);
+		period.DATE_TO.set(Calendar.DAY_OF_MONTH, period.DATE_TO.getActualMaximum(Calendar.DAY_OF_MONTH));
+		
+		period.DATE_FROM.set(Calendar.MONTH, i-1);
+		period.DATE_FROM.set(Calendar.DAY_OF_MONTH, 1);
+		
+		return period;
 	}
 	
-	private String stringGenerate(){
+	public static PeriodToString today(){
+		PeriodToString period = new PeriodToString();
+		period.DATE_FROM = Calendar.getInstance();
+		period.DATE_TO = Calendar.getInstance();
+		return period;
+	}
+	
+	public String toString(){
 		String out = "calldate >= '" + this.DATE_FROM.get(Calendar.YEAR) + "-" + (this.DATE_FROM.get(Calendar.MONTH) + 1) + "-" + this.DATE_FROM.get(Calendar.DAY_OF_MONTH) + "'" + 
 			       " AND calldate <= '" + this.DATE_TO.get(Calendar.YEAR) + "-" + (this.DATE_TO.get(Calendar.MONTH) + 1) + "-" + this.DATE_TO.get(Calendar.DAY_OF_MONTH) + "'";
 		return out;
 	}
 	
-	public String toString(){
+	public String periodAnnotation(){
 		return "Period generated: " + this.DATE_FROM.get(Calendar.YEAR) + "-" + (this.DATE_FROM.get(Calendar.MONTH) + 1) + "-" + this.DATE_FROM.get(Calendar.DAY_OF_MONTH) + 
 				" - " + this.DATE_TO.get(Calendar.YEAR) + "-" + (this.DATE_TO.get(Calendar.MONTH) + 1) + "-" + this.DATE_TO.get(Calendar.DAY_OF_MONTH);
 	}
