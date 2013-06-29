@@ -38,8 +38,8 @@ public class AsteriskStats {
 		try {
 			Call call = new Call();
 		while (rs.next()){
-			call.SRC = rs.getString(2);
-			call.DST = rs.getString(1);
+			call.SRC = rs.getString(1);
+			call.DST = rs.getString(2);
 			call.DURATION = rs.getInt(3);
 			if (db.containsKey(call.SRC)){
 					db.put(call.SRC, db.get(call.SRC) + call.DURATION);
@@ -59,33 +59,15 @@ public class AsteriskStats {
 	
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
-		/*Connection conn = getMysqlConnect("docent","31415Docent");
-		PeriodToString period = new PeriodToString();
-		
-		String sql_querry = "SELECT * FROM cdr WHERE " + period.thisMonth();
-		System.out.print(sql_querry);
-		ResultSet rs = commitStatement(conn, sql_querry);
-		
-		HashMap<String, Integer> db = new HashMap<String, Integer>();
-		resSetToHash(rs, db);
-		
-		conn.close();
-		
-		System.out.print(hashToCsv(db, "X:\\1.txt", "Statistics for " + period + " SQL query to base was: " + sql_querry + "\""));
-		
-		for (String keys:db.keySet()){
-			System.out.println(keys + ": " + db.get(keys)/60 + " minutes");
-		}*/
-		
+
 		CallFilter cf = new CallFilter();
-		cf.setDstFilter("[90]________%");
+		cf.setDstFilter("%_________");
 		cf.setSrcFilter("1__");
-		cf.setDurationFilter(10);
-		cf.setCallsPeriod(PeriodToString.today());
+		cf.setCallsPeriod(PeriodToString.thisMonth());
 		
 		DbProcessor dbProc = new DbProcessor(new File(System.getenv("HOME") + "/.AsteriskStats/settings.xml"));
-		ResultSet rs = dbProc.outQuery("dst, src, duration", "cdr", cf.toString());
-		
+		ResultSet rs = dbProc.outQuery("src, dst, duration", "cdr", cf.toString());
+
 		HashMap<String, Integer> db = new HashMap<String, Integer>();
 		resSetToHash(rs, db);
 		for (String keys:db.keySet()){

@@ -1,7 +1,9 @@
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
@@ -49,17 +51,20 @@ public class DbProcessor {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://" + this.host + "/" + this.db + "?" + "user=" + this.dbUser + "&password=" + this.dbPassword);
 		}catch (SQLException e){
-			
+			 ExceptionHandler.ErrorOutput(e, System.out);
 		}
-		System.out.print("Connection established");
 		return conn;
 	}
 	
 	public  ResultSet outQuery(String columns, String baseName, String filter){
 		try{
-			return getMysqlConnect().createStatement().executeQuery("SELECT " + columns +  
-																	" FROM " +	baseName + 
-																	" WHERE" + filter);
+            /*System.out.print("SELECT " + columns +
+                    " FROM " +	baseName +
+                    " WHERE " + filter);*/
+			return getMysqlConnect().createStatement().executeQuery("SELECT " + columns +
+																	" FROM " +	baseName +
+																	" WHERE " + filter);
+
 			
 		}catch (SQLException e){
 			ExceptionHandler.ErrorOutput(e, System.out); 
