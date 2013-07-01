@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 
 
+
 public class AsteriskStats {
 
     public static void putStatDb(HashMap<String, Integer> db, String key, Integer value){
@@ -55,7 +56,13 @@ public class AsteriskStats {
 		cf.setCallsPeriod(PeriodToString.month(4));
         //cf.setDurationFilter(110);
 
-		DbProcessor dbProc = new DbProcessor(new File(System.getenv("HOME") + "/.AsteriskStats/settings.xml"));
+		DbProcessor dbProc = DbProcessor.getDbProcessor(new File(System.getProperty("user.home") + "/.AsteriskStats/settings.xml"));
+        if (dbProc == null){
+            System.err.println("There is no settings file: " + System.getProperty("user.home") + "/.AsteriskStats/settings.xml");
+            System.err.println("Program shutdown.");
+            System.err.println("Operation system: " + System.getProperties().getProperty("os.name"));
+            System.exit(0);
+        }
 
         ResultSet rs = dbProc.outQuery("src, dst, duration", "cdr", cf.toString());
 

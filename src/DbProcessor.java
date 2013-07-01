@@ -24,7 +24,7 @@ public class DbProcessor {
 	private DbProcessor(){
 	}
 	
-	public DbProcessor(File settingsXMLFile){
+	private DbProcessor(File settingsXMLFile){
 		SAXBuilder builder = new SAXBuilder();
 		try{
 			Document document = builder.build(settingsXMLFile);
@@ -41,8 +41,13 @@ public class DbProcessor {
 			ExceptionHandler.ErrorOutput(e, System.out);
 		}catch (IOException e){
 			ExceptionHandler.ErrorOutput(e, System.out);
-		}
+		};
 	}
+
+    public static DbProcessor getDbProcessor(File settingsXMLFile){
+        if (settingsXMLFile.exists())return new DbProcessor(settingsXMLFile);
+        else return null;
+    }
 	
 	
 	private Connection getMysqlConnect(){
@@ -58,9 +63,9 @@ public class DbProcessor {
 	
 	public  ResultSet outQuery(String columns, String baseName, String filter){
 		try{
-            System.out.print("SELECT " + columns +
+            /*System.out.println("SELECT " + columns +
                     " FROM " +	baseName +
-                    " WHERE " + filter);
+                    " WHERE " + filter);*/
 			return getMysqlConnect().createStatement().executeQuery("SELECT " + columns +
 																	" FROM " +	baseName +
 																	" WHERE " + filter);
