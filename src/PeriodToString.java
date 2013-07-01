@@ -45,6 +45,30 @@ public class PeriodToString{
 		period.DATE_TO = Calendar.getInstance();
 		return period;
 	}
+
+    /**
+     * Date format is YYYY-MM-DD
+     * @param from
+     * @param to
+     * @return
+     */
+    public static PeriodToString interval(String from, String to){
+        PeriodToString period = new PeriodToString();
+        period.DATE_FROM = Calendar.getInstance();
+        period.DATE_TO = Calendar.getInstance();
+
+        String[] fromArray = from.split("-");
+
+        period.DATE_FROM.set(Calendar.YEAR, Integer.valueOf(fromArray[0]));
+        period.DATE_FROM.set(Calendar.MONTH, Integer.valueOf(fromArray[1]) - 1);
+        period.DATE_FROM.set(Calendar.DAY_OF_MONTH, Integer.valueOf(fromArray[2]));
+
+        String [] toArray = to.split("-");
+        period.DATE_TO.set(Calendar.YEAR, Integer.valueOf(toArray[0]));
+        period.DATE_TO.set(Calendar.MONTH, Integer.valueOf(toArray[1]) - 1);
+        period.DATE_TO.set(Calendar.DAY_OF_MONTH, Integer.valueOf(toArray[2]));
+        return period;
+    }
 	
 	public String toString(){
 		String out = "calldate >= '" + this.DATE_FROM.get(Calendar.YEAR) + "-" + (this.DATE_FROM.get(Calendar.MONTH) + 1) + "-" + this.DATE_FROM.get(Calendar.DAY_OF_MONTH) + "'" + 

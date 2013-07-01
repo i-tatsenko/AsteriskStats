@@ -1,22 +1,30 @@
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.sql.DriverManager;
+import java.io.*;
+import java.util.*;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.ResultSet;
 
 
 public class AsteriskStats {
-		
+
+    public static void putStatDb(HashMap<String, Integer> db, String key, Integer value){
+        if (db.containsKey(key)){
+            db.put(key, db.get(key) + value);
+        }else{
+            db.put(key, value);
+        }
+
+    }
+
+    public static void putStatDb(HashMap<String, CallStatsSrc> db, Call value){
+        if (db.containsKey(value.SRC)){
+            db.get(value.SRC).addCall(value);
+        }else{
+            db.put(value.SRC, new CallStatsSrc(value));
+        }
+    }
+
+
+
 	public static boolean hashToCsv(HashMap<String, Integer> db, String file_name, String head){
 		try{
 			PrintWriter file = new PrintWriter(new File(file_name));
@@ -34,25 +42,7 @@ public class AsteriskStats {
 		return false;
 	}
 	
-	public static void resSetToHash(ResultSet rs, HashMap<String, Integer> db){
-		try {
-			Call call = new Call();
-		while (rs.next()){
-			call.SRC = rs.getString(1);
-			call.DST = rs.getString(2);
-			call.DURATION = rs.getInt(3);
-			if (db.containsKey(call.SRC)){
-					db.put(call.SRC, db.get(call.SRC) + call.DURATION);
-				}else{
-					db.put(call.SRC, call.DURATION);
-				}
-			
-		}
-		}catch (SQLException e){
-			ExceptionHandler.ErrorOutput(e, System.out);
-		}
-		
-	}
+
 	
 	
 	
@@ -60,22 +50,35 @@ public class AsteriskStats {
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 
-		CallFilter cf = new CallFilter();
-		cf.setDstFilter("%_________");
-		cf.setSrcFilter("1__");
-		cf.setCallsPeriod(PeriodToString.thisMonth());
-		
+		CallFilter cf = new CallFilter("1__");
+		//cf.setDstFilter("%_________");
+		cf.setCallsPeriod(PeriodToString.month(4));
+        //cf.setDurationFilter(110);
+
 		DbProcessor dbProc = new DbProcessor(new File(System.getenv("HOME") + "/.AsteriskStats/settings.xml"));
-		ResultSet rs = dbProc.outQuery("src, dst, duration", "cdr", cf.toString());
 
-		HashMap<String, Integer> db = new HashMap<String, Integer>();
-		resSetToHash(rs, db);
-		for (String keys:db.keySet()){
-			System.out.println(keys + ": " + db.get(keys)/60 + " minutes");
-		}
+        ResultSet rs = dbProc.outQuery("src, dst, duration", "cdr", cf.toString());
 
-	}
+        HashMap<String, CallStatsSrc> db = new HashMap<String, CallStatsSrc>();
+        LinkedList<Call> calls = Call.callsFabric(rs);
+
+        for (Call call:calls){
+            putStatDb(db, call);
+        }
+        for (String keys:db.keySet()){
+            System.out.println(keys + ": " + (float)db.get(keys).getDuration()/60 + " minutes");
+        }
+
+        System.out.println("Total amount of calls: " + Call.getCount());
+        String popularDSTC[] = db.get("136").popNumbers();
+        System.out.println("The most popular numbers are:");
+        for (int i = 0; i < popularDSTC.length;i++){
+            if (!popularDSTC[i].equals("0:0"))System.out.println(popularDSTC[i].split(":")[0] + " with " + popularDSTC[i].split(":")[1] + " calls");
+        }
+
+    }
 }
+
 
 
 

@@ -58,9 +58,9 @@ public class DbProcessor {
 	
 	public  ResultSet outQuery(String columns, String baseName, String filter){
 		try{
-            /*System.out.print("SELECT " + columns +
+            System.out.print("SELECT " + columns +
                     " FROM " +	baseName +
-                    " WHERE " + filter);*/
+                    " WHERE " + filter);
 			return getMysqlConnect().createStatement().executeQuery("SELECT " + columns +
 																	" FROM " +	baseName +
 																	" WHERE " + filter);
