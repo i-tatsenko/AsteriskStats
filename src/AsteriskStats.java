@@ -53,7 +53,7 @@ public class AsteriskStats {
 
 		CallFilter cf = new CallFilter("1__");
 		//cf.setDstFilter("%_________");
-		cf.setCallsPeriod(PeriodToString.month(4));
+		cf.setCallsPeriod(PeriodToString.month(6));
         //cf.setDurationFilter(110);
 
 		DbProcessor dbProc = DbProcessor.getDbProcessor(new File(System.getProperty("user.home") + "/.AsteriskStats/settings.xml"));
@@ -77,10 +77,11 @@ public class AsteriskStats {
         }
 
         System.out.println("Total amount of calls: " + Call.getCount());
-        String popularDSTC[] = db.get("136").popNumbers();
+        String popularDSTC[] = db.get("137").popNumbers();
         System.out.println("The most popular numbers are:");
-        for (int i = 0; i < popularDSTC.length;i++){
-            if (!popularDSTC[i].equals("0:0"))System.out.println(popularDSTC[i].split(":")[0] + " with " + popularDSTC[i].split(":")[1] + " calls");
+        for (String aPopularDSTC : popularDSTC) {
+            if (!aPopularDSTC.equals("0:0"))
+                System.out.println(aPopularDSTC.split(":")[0] + " with " + aPopularDSTC.split(":")[1] + " calls");
         }
 
     }

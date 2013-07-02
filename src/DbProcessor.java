@@ -30,7 +30,7 @@ public class DbProcessor {
 			Document document = builder.build(settingsXMLFile);
 			Element rootNode = document.getRootElement();
 			List<Element> sqlList = rootNode.getChildren("sqlserver");
-			Element sqlNode = (Element)sqlList.get(0);
+			Element sqlNode = sqlList.get(0);
 			this.host = sqlNode.getChildText("host");
 			this.db = sqlNode.getChildText("db");
 			this.dbUser = sqlNode.getChildText("user");
@@ -40,9 +40,8 @@ public class DbProcessor {
 		}catch (JDOMException e){
 			ExceptionHandler.ErrorOutput(e, System.out);
 		}catch (IOException e){
-			ExceptionHandler.ErrorOutput(e, System.out);
-		};
-	}
+			ExceptionHandler.ErrorOutput(e, System.out);}
+    }
 
     public static DbProcessor getDbProcessor(File settingsXMLFile){
         if (settingsXMLFile.exists())return new DbProcessor(settingsXMLFile);
