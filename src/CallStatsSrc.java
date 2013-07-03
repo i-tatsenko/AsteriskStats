@@ -3,7 +3,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Created with IntelliJ IDEA.
+ * Instance of this class represents statistics
+ * for some number. Statistics contains number
+ * of calls, total calls` duration, and Map of
+ * this source`s destinations.
+ *
+ *
  * User: Docent
  * Date: 30.06.13
  * Time: 22:38
@@ -11,6 +16,11 @@ import java.util.HashMap;
 public class CallStatsSrc {
     private long count = 0;
     private long duration = 0;
+
+    /**
+     * dstDb is base of destinations with number
+     * of calls were made to this dst.
+     */
     private HashMap<String, Integer> dstDb;
 
     public CallStatsSrc(){

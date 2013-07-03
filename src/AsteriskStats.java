@@ -7,6 +7,14 @@ import java.sql.ResultSet;
 
 public class AsteriskStats {
 
+    /**
+     *
+     *
+     * @param db
+     * @param key
+     * @param value - it`s means that value can be number of calls,
+     *                of call duration
+     */
     public static void putStatDb(HashMap<String, Integer> db, String key, Integer value){
         if (db.containsKey(key)){
             db.put(key, db.get(key) + value);
@@ -16,11 +24,11 @@ public class AsteriskStats {
 
     }
 
-    public static void putStatDb(HashMap<String, CallStatsSrc> db, Call value){
-        if (db.containsKey(value.SRC)){
-            db.get(value.SRC).addCall(value);
+    public static void putStatDb(HashMap<String, CallStatsSrc> db, Call call){
+        if (db.containsKey(call.SRC)){
+            db.get(call.SRC).addCall(call);
         }else{
-            db.put(value.SRC, new CallStatsSrc(value));
+            db.put(call.SRC, new CallStatsSrc(call));
         }
     }
 
