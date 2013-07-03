@@ -3,6 +3,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 
 public class Call{
+
     protected static long count = 0;
     private final long id;
     private static char lineEnterPrefix = '9';
@@ -24,7 +25,6 @@ public class Call{
         this.SRC = removeLineEnterPrefix(src);
         this.DST = removeLineEnterPrefix(dst);
         this.DURATION = duration;
-
         this.id = ++count;
     }
 
@@ -57,4 +57,6 @@ public class Call{
         return  "SRC: " + this.SRC + " DST: " + this.DST + " DIAL STATE: " + this.LASTAPP;
 	}
 }
+
+
 
