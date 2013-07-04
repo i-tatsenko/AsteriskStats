@@ -24,13 +24,9 @@ public class AsteriskStats {
 
     }
 
-    public static void putStatDb(HashMap<String, CallStatsSrc> db, Call call){
-        if (db.containsKey(call.SRC)){
-            db.get(call.SRC).addCall(call);
-        }else{
-            db.put(call.SRC, new CallStatsSrc(call));
-        }
-    }
+
+
+
 
 
 
@@ -78,7 +74,7 @@ public class AsteriskStats {
         LinkedList<Call> calls = Call.callsFabric(rs);
 
         for (Call call:calls){
-            putStatDb(db, call);
+            CallStats.putStatDb(db, call);
         }
         for (String keys:db.keySet()){
             System.out.println(keys + ": " + (float)db.get(keys).getDuration()/60 + " minutes");
