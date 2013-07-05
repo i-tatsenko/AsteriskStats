@@ -4,16 +4,23 @@ import java.util.LinkedList;
 
 public class Call{
 
-    protected static long count = 0;
+
     private final long id;
     private static char lineEnterPrefix = '9';
+    private String lastApp = "Dial";
 
-	public String SRC;
-	public String DST;
-	public int DURATION;
-	public String LASTAPP;
+    protected static long count = 0;
+    protected String[] callArray;
 
-    protected Call(){ id = -1;}
+	public static int SRC = 0;
+	public static int DST = 1;
+    public static int LASTAPP = 2;
+	public static int DURATION = 3;
+
+
+
+
+    protected Call(){ id = -1; callArray = null;}
 
     private static String removeLineEnterPrefix(String number){
         if (number.charAt(0) == lineEnterPrefix){return number.substring(1);}
@@ -22,9 +29,7 @@ public class Call{
     }
 
     public Call(String src, String dst, int duration){
-        this.SRC = removeLineEnterPrefix(src);
-        this.DST = removeLineEnterPrefix(dst);
-        this.DURATION = duration;
+        this.callArray = new String[]{removeLineEnterPrefix(src), removeLineEnterPrefix(dst), lastApp, String.valueOf(duration)};
         this.id = ++count;
     }
 
@@ -42,7 +47,7 @@ public class Call{
         LinkedList<Call> list = new LinkedList<Call>();
         try {
             while (rs.next()){
-                Call call = new Call(rs.getString(1), rs.getString(2), rs.getInt(3));
+                Call call = new Call(rs.getString(1), rs.getString(2), rs.getInt(4));
                 list.add(call);
             }
         }catch (SQLException e){
@@ -52,9 +57,29 @@ public class Call{
         return list;
     }
 
+    public String[] getCall(){
+        return callArray;
+    }
+
+    public static int getTargetPair(int target){
+        switch (target){
+            case 0: {
+                return 1;
+            }
+            case 1: {
+                return 0;
+            }
+            default: {
+                return -1;
+            }
+
+        }
+    }
+
+
 
 	public String toString(){
-        return  "SRC: " + this.SRC + " DST: " + this.DST + " DIAL STATE: " + this.LASTAPP;
+        return  "SRC: " + this.callArray[SRC] + " DST: " + this.callArray[DST] + " TIME: " + callArray[DURATION] + " DIAL STATE: " + this.callArray[LASTAPP];
 	}
 }
 

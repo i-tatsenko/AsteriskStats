@@ -1,11 +1,7 @@
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
- * Instance of this class represents statistics
- * for some number. Statistics contains number
- * of calls, total calls` duration, and Map of
- * this source`s destinations /  Map  of  this
- * destination`s sources
  *
  *
  * User: Docent
@@ -13,85 +9,73 @@ import java.util.HashMap;
  * Time: 22:38
  */
 public  class CallStats {
-    /**
-     * statsFor can contain "SRC", orDST
-     */
-    protected final callField statsFor;
-    protected long count = 0;
-    protected long duration = 0;
 
-    /**
-     * callMap is base of sources\destinations with number
-     * of calls were made to this dst \ were made from this
-     * source.
-     */
-    protected HashMap<String, Integer> callMap;
+    protected final int TARGET;
+    protected final int TARGET_PAIR;
+    protected HashMap<String, TargetStats> targetDb = new HashMap<String, TargetStats>();
 
     @SuppressWarnings("unused")
-    protected CallStats(){
-        this.statsFor = null;
+    private CallStats(){
+        this.TARGET = 0;
+        this.TARGET_PAIR = 1;
+    }
+
+    public CallStats(int target){
+        this.TARGET = target;
+        this.TARGET_PAIR = Call.getTargetPair(TARGET);
 
     }
 
-    public CallStats(callField statsFor){
-        this.callMap = new HashMap<String, Integer>();
-        this.statsFor = statsFor;
+    public CallStats(int target, LinkedList<Call> calls){
+        this.TARGET = target;
+        this.TARGET_PAIR = Call.getTargetPair(TARGET);
+        for (Call call:calls){
+            addCall(call);
+        }
     }
 
-    public CallStats(Call call, callField statsFor){
-        this.count++;
-        this.duration = call.DURATION;
-        this.callMap = new HashMap<String, Integer>();
-        //callMap.put(call.DST, 1); move to children classes
-        this.statsFor = statsFor;
-    }
+
 
     public void addCall(Call call){
-        this.count++;
-        this.duration += call.DURATION;
-        //AsteriskStats.putStatDb(this.callMap, call.DST, 1); move to children class
+        if (targetDb.containsKey(call.getCall()[this.TARGET])){
+            this.targetDb.get(call.getCall()[this.TARGET]).addTargetBase(call);
+        }else{
+            this.targetDb.put(call.getCall()[this.TARGET], new TargetStats(call, TARGET));
+            //addCall(call);
+        }
+
     }
 
-    public String[] popNumbers(){
+    public String[] popNumbers(String targetNumber){
         String[] out = {"0:0", "0:0", "0:0"};
-        for (String key : callMap.keySet()){
-            if (Integer.valueOf(out[0].split(":")[1]) < callMap.get(key)){
+        TargetStats targetBase = targetDb.get(targetNumber);
+
+
+        for (String key : targetBase.getCallStats().keySet()){
+            if (Integer.valueOf(out[0].split(":")[1]) < Integer.valueOf(targetBase.getCallStatsValue(key).getCallsCount())){
                 out[2] = out[1];
                 out[1] = out[0];
-                out[0] = key + ":" + callMap.get(key);
-            }else if (Integer.valueOf(out[1].split(":")[1]) < callMap.get(key)){
+                out[0] = key + ":" + Integer.valueOf(targetBase.getCallStatsValue(key).getCallsCount());
+            }else if (Integer.valueOf(out[1].split(":")[1]) < Integer.valueOf(targetBase.getCallStatsValue(key).getCallsCount())){
                 out[2] = out[1];
-                out[1] = key + ":" + callMap.get(key);
-            }else if (Integer.valueOf(out[2].split(":")[1]) < callMap.get(key)){
-                out[2] = key + ":" + callMap.get(key);
+                out[1] = key + ":" + Integer.valueOf(targetBase.getCallStatsValue(key).getCallsCount());
+            }else if (Integer.valueOf(out[2].split(":")[1]) < Integer.valueOf(targetBase.getCallStatsValue(key).getCallsCount())){
+                out[2] = key + ":" + Integer.valueOf(targetBase.getCallStatsValue(key).getCallsCount());
             }
         }
 
         return out;
     }
 
-    public long getCount(){
-        return this.count;
-    }
-
-    public long getDuration(){
-        return this.duration;
-    }
-
-    public HashMap<String, Integer> getCallMap(){
-        return this.callMap;
-    }
-
-    public static <T extends CallStats> void putStatDb(HashMap<String, T> db, Call call){
-
-        if (db.containsKey(call.SRC)){
-            db.get(call.SRC).addCall(call);
-        }else{
-           db.put(call.SRC, new T());
-
+    public void printStats(){
+        for (String key:targetDb.keySet()){
+            System.out.println(key + ": " + targetDb.get(key).getDuration());
         }
     }
 
+    public String toString(){
+        return "This unit has " + targetDb.keySet().size() + " keys and " + targetDb.values().size() + " values";
+    }
 
 
 }

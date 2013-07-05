@@ -3,64 +3,46 @@ public class CallFilter extends Call{
 	PeriodToString callsPeriod = null;
 
     public CallFilter(){
-		this.SRC = null;
-		this.DST = null;
-		this.LASTAPP = "Dial";
-		this.DURATION = 0;
+		callArray = new String[]{null, null, "Dial", "0"};
 	}
 
     public CallFilter(String src){
-        this.SRC = src;
-        this.DST = null;
-        this.LASTAPP = "Dial";
-        this.DURATION = 0;
+        callArray = new String[]{src, null, "Dial", "0"};
     }
 
     public CallFilter(String src, String dst){
-        this.SRC = src;
-        this.DST = dst;
-        this.LASTAPP = "Dial";
-        this.DURATION = 0;
+        callArray = new String[]{src, dst, "Dial", "0"};
     }
 
     public CallFilter(String src, String dst, String lastapp){
-        this.SRC = src;
-        this.DST = dst;
-        this.LASTAPP = lastapp;
-        this.DURATION = 0;
+        callArray = new String[]{src, dst, lastapp, "0"};
     }
 
     public CallFilter(String src, String dst, String lastapp, int duration){
-        this.SRC = src;
-        this.DST = dst;
-        this.LASTAPP = lastapp;
-        this.DURATION = duration;
+        callArray = new String[]{src, dst, lastapp, String.valueOf(duration)};
     }
 
     public CallFilter(String src, String dst, String lastapp, int duration, PeriodToString period){
-        this.SRC = src;
-        this.DST = dst;
-        this.LASTAPP = lastapp;
-        this.DURATION = duration;
+        callArray = new String[]{src, dst, lastapp, String.valueOf(duration)};
         this.callsPeriod = period;
     }
 
 
 	
 	public void setSrcFilter(String filter){
-		this.SRC = filter;
+		callArray[Call.SRC] = filter;
 	}
 	
 	public void setDstFilter(String filter){
-		this.DST = filter;
+        callArray[Call.DST] = filter;
 	}
 	
 	public void setDurationFilter(int filter){
-		this.DURATION = filter;
+        callArray[Call.DURATION] = String.valueOf(filter);
 	}
 	
 	public void setLastappFilter(String filter){
-		this.LASTAPP = filter;
+		callArray[Call.LASTAPP] = filter;
 	}
 
 
@@ -71,25 +53,25 @@ public class CallFilter extends Call{
 	public String toString(){
 		String temp = "";
 		String and = "";
-		if (this.SRC != null){ 
-			temp += "src LIKE '" + this.SRC + "'";
+		if (callArray[SRC] != null){
+			temp += "src LIKE '" + callArray[SRC] + "'";
 			and = " AND ";
 		}
-		if (this.DST != null){ 
-			temp += and + "dst LIKE '" + this.DST + "'";
+		if (callArray[DST] != null){
+			temp += and + "dst LIKE '" + callArray[DST] + "'";
 			and = " AND ";
 		
 		}
-		if (this.DURATION != 0){
-			temp += and + "duration >= '" + this.DURATION + "'";
+		if (!callArray[DURATION].equals("0")){
+			temp += and + "duration >= '" + callArray[DST] + "'";
 			and = " AND ";
 		}
 		if (this.callsPeriod != null){
 			temp += and + this.callsPeriod;
 		}
 
-        if (this.LASTAPP != null){
-            temp += and + "lastapp = '" + this.LASTAPP + "'";
+        if (callArray[LASTAPP] != null){
+            temp += and + "lastapp = '" + callArray[LASTAPP] + "'";
         }
 		
 		return temp;

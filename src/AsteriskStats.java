@@ -55,9 +55,9 @@ public class AsteriskStats {
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 
-		CallFilter cf = new CallFilter("1__");
+        CallFilter cf = new CallFilter("137");
 		//cf.setDstFilter("%_________");
-		cf.setCallsPeriod(PeriodToString.month(6));
+		cf.setCallsPeriod(PeriodToString.thisMonth());
         //cf.setDurationFilter(110);
 
 		DbProcessor dbProc = DbProcessor.getDbProcessor(new File(System.getProperty("user.home") + "/.AsteriskStats/settings.xml"));
@@ -68,20 +68,15 @@ public class AsteriskStats {
             System.exit(0);
         }
 
-        ResultSet rs = dbProc.outQuery("src, dst, duration", "cdr", cf.toString());
+        ResultSet rs = dbProc.outQuery("src, dst, lastapp, duration", "cdr", cf.toString());
 
-        HashMap<String, CallStatsSrc> db = new HashMap<String, CallStatsSrc>();
         LinkedList<Call> calls = Call.callsFabric(rs);
 
-        for (Call call:calls){
-            CallStats.putStatDb(db, call);
-        }
-        for (String keys:db.keySet()){
-            System.out.println(keys + ": " + (float)db.get(keys).getDuration()/60 + " minutes");
-        }
 
+        CallStats stats = new CallStats(Call.SRC, calls);
+        stats.printStats();
         System.out.println("Total amount of calls: " + Call.getCount());
-        String popularDSTC[] = db.get("137").popNumbers();
+        String popularDSTC[] = stats.popNumbers("121");
         System.out.println("The most popular numbers are:");
         for (String aPopularDSTC : popularDSTC) {
             if (!aPopularDSTC.equals("0:0"))
