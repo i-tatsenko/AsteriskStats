@@ -49,8 +49,6 @@ public  class CallStats {
     public String[] popNumbers(String targetNumber){
         String[] out = {"0:0", "0:0", "0:0"};
         TargetStats targetBase = targetDb.get(targetNumber);
-
-
         for (String key : targetBase.getCallStats().keySet()){
             if (Integer.valueOf(out[0].split(":")[1]) < Integer.valueOf(targetBase.getCallStatsValue(key).getCallsCount())){
                 out[2] = out[1];

@@ -16,7 +16,7 @@ public class TargetStats {
     private HashMap<String, Stats> targetBase = new HashMap<String, Stats>();
 
     public TargetStats(Call call, int target){
-        TARGET = Call.getTargetPair(target);
+        TARGET = target;
         addCall(call);
         addTargetBase(call);
 
@@ -30,7 +30,7 @@ public class TargetStats {
 
         }else {
             targetBase.put(call.getCall()[Call.getTargetPair(TARGET)], new Stats(Call.getTargetPair(TARGET), call));
-            addTargetBase(call);
+            addCall(call);
         }
 
     }
@@ -54,6 +54,13 @@ public class TargetStats {
 
     public int getCallsCount(){
         return callsCount;
+    }
+
+    public void showTargetLogs(){
+        for (String key : targetBase.keySet()){
+            System.out.println("Key: " + key + " Value: " + targetBase.get(key).getCallsCount());
+        }
+
     }
 
 
