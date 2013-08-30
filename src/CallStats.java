@@ -1,5 +1,4 @@
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  *
@@ -12,7 +11,7 @@ public  class CallStats {
 
     protected final int TARGET;
     protected final int TARGET_PAIR;
-    protected HashMap<String, TargetStats> targetDb = new HashMap<String, TargetStats>();
+    protected TreeMap<String, TargetStats> targetDb = new TreeMap<String, TargetStats>();
 
     @SuppressWarnings("unused")
     private CallStats(){
@@ -65,9 +64,44 @@ public  class CallStats {
         return out;
     }
 
-    public void printStats(){
+
+
+    public void printStatsSortByNumber(){
         for (String key:targetDb.keySet()){
-            System.out.println(key + ": " + targetDb.get(key).getDuration());
+            System.out.println(key + ": " + targetDb.get(key).getCallsCount());
+        }
+    }
+
+    public void printStatsSortByCallsCount(){
+        class temp implements Comparable<temp>{
+            public int hashCode(){
+                return Integer.valueOf(this.number);
+            }
+            int callsCount;
+            String number;
+              public int compareTo(temp c){
+                  if (this.callsCount > c.callsCount) return 0;
+                  else if (this.callsCount < c.callsCount) return 1;
+                  else return -1;
+              }
+         private temp(){};
+         temp(int cc, String nb){
+             this.callsCount = cc;
+             this.number = nb;
+         }
+
+        }
+
+
+        TreeSet<temp> tempTree = new TreeSet<temp>();
+        for (String key:targetDb.keySet()){
+            System.out.print(tempTree.add(new temp(targetDb.get(key).getCallsCount(), key)));
+
+
+        }
+
+        for (temp tmp:tempTree){
+            System.out.println(tmp.number + ": " + tmp.callsCount);
         }
     }
 

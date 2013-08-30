@@ -1,6 +1,7 @@
 
 public class CallFilter extends Call{
 	PeriodToString callsPeriod = null;
+    private int onlyNightCalls = 0;
 
     public CallFilter(){
 		callArray = new String[]{null, null, "Dial", "0"};
@@ -45,6 +46,11 @@ public class CallFilter extends Call{
 		callArray[Call.LASTAPP] = filter;
 	}
 
+    public void setOnlyNightCalls(){
+        this.onlyNightCalls = 1;
+    }
+
+
 
 	public void setCallsPeriod(PeriodToString period){
 		this.callsPeriod = period;
@@ -68,13 +74,21 @@ public class CallFilter extends Call{
 		}
 		if (this.callsPeriod != null){
 			temp += and + this.callsPeriod;
+            and = " AND ";
 		}
 
         if (callArray[LASTAPP] != null){
             temp += and + "lastapp = '" + callArray[LASTAPP] + "'";
         }
+
+        switch (onlyNightCalls) {
+            case 1:{
+                return "(" + temp + ")" + " AND ( ((calldate REGEXP \"19:..:..$\") OR (calldate REGEXP \"2[0-4]:..:..$\")) OR (calldate REGEXP \"0[0-8]:..:..$\") )";
+            }
+            default: return temp;
+        }
 		
-		return temp;
+
 	}
 
 }

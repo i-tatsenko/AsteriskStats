@@ -69,7 +69,7 @@ public class PeriodToString{
         period.DATE_TO.set(Calendar.DAY_OF_MONTH, Integer.valueOf(toArray[2]));
         return period;
     }
-	
+
 	public String toString(){
         return "calldate >= '" + this.DATE_FROM.get(Calendar.YEAR) + "-" + (this.DATE_FROM.get(Calendar.MONTH) + 1) + "-" + this.DATE_FROM.get(Calendar.DAY_OF_MONTH) + "'" +
 			       " AND calldate <= '" + this.DATE_TO.get(Calendar.YEAR) + "-" + (this.DATE_TO.get(Calendar.MONTH) + 1) + "-" + this.DATE_TO.get(Calendar.DAY_OF_MONTH) + "'";

@@ -55,10 +55,11 @@ public class AsteriskStats {
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 
-        CallFilter cf = new CallFilter("1__");
+        CallFilter cf = new CallFilter();
 		//cf.setDstFilter("%_________");
-		cf.setCallsPeriod(PeriodToString.daysAgo(1));
+		cf.setCallsPeriod(PeriodToString.thisMonth());
         //cf.setDurationFilter(110);
+        cf.setOnlyNightCalls();
 
 		DbProcessor dbProc = DbProcessor.getDbProcessor(new File(System.getProperty("user.home") + "/.AsteriskStats/settings.xml"));
         if (dbProc == null){
@@ -74,7 +75,7 @@ public class AsteriskStats {
 
 
         CallStats stats = new CallStats(Call.SRC, calls);
-        stats.printStats();
+        stats.printStatsSortByCallsCount();
         System.out.println("Total amount of calls: " + Call.getCount());
         String popularDSTC[] = stats.popNumbers("137");
         System.out.println("The most popular numbers are:");
