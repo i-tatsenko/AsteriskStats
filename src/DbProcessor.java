@@ -3,7 +3,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
@@ -24,15 +23,15 @@ public class DbProcessor {
 	private DbProcessor(){
 	}
 	
-	private DbProcessor(File settingsXMLFile){
+	private DbProcessor(File settingsXMLFile, String dbName){
 		SAXBuilder builder = new SAXBuilder();
 		try{
 			Document document = builder.build(settingsXMLFile);
 			Element rootNode = document.getRootElement();
 			List<Element> sqlList = rootNode.getChildren("sqlserver");
 			Element sqlNode = sqlList.get(0);
+            this.db = dbName;
 			this.host = sqlNode.getChildText("host");
-			this.db = sqlNode.getChildText("db");
 			this.dbUser = sqlNode.getChildText("user");
 			this.dbPassword = sqlNode.getChildText("password");
 			
@@ -43,8 +42,8 @@ public class DbProcessor {
 			ExceptionHandler.ErrorOutput(e, System.out);}
     }
 
-    public static DbProcessor getDbProcessor(File settingsXMLFile){
-        if (settingsXMLFile.exists())return new DbProcessor(settingsXMLFile);
+    public static DbProcessor getDbProcessor(File settingsXMLFile, String dbName){
+        if (settingsXMLFile.exists())return new DbProcessor(settingsXMLFile, dbName);
         else return null;
     }
 	
@@ -75,6 +74,18 @@ public class DbProcessor {
 		}
 		return null;
 	}
+
+    public  ResultSet outQuery(String columns, String baseName){
+        try{
+            return getMysqlConnect().createStatement().executeQuery("SELECT " + columns +
+                    " FROM " +	baseName);
+
+
+        }catch (SQLException e){
+            ExceptionHandler.ErrorOutput(e, System.out);
+        }
+        return null;
+    }
 	
 
 }

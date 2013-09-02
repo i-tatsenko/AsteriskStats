@@ -61,7 +61,7 @@ public class Call{
         return callArray;
     }
 
-    public static int getTargetPair(int target){
+    public static int getTargetPair(int target){     //ReWrite!!!!!!!!!
         switch (target){
             case 0: {
                 return 1;

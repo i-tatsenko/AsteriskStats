@@ -1,5 +1,6 @@
 import java.util.Calendar;
 
+@SuppressWarnings("unused")
 public class PeriodToString{
 	private Calendar DATE_TO;
 	private Calendar DATE_FROM;
@@ -71,8 +72,9 @@ public class PeriodToString{
     }
 
 	public String toString(){
+        this.DATE_TO.add(Calendar.DAY_OF_MONTH, 1);
         return "calldate >= '" + this.DATE_FROM.get(Calendar.YEAR) + "-" + (this.DATE_FROM.get(Calendar.MONTH) + 1) + "-" + this.DATE_FROM.get(Calendar.DAY_OF_MONTH) + "'" +
-			       " AND calldate <= '" + this.DATE_TO.get(Calendar.YEAR) + "-" + (this.DATE_TO.get(Calendar.MONTH) + 1) + "-" + this.DATE_TO.get(Calendar.DAY_OF_MONTH) + "'";
+			       " AND calldate <= '" + this.DATE_TO.get(Calendar.YEAR) + "-" + (this.DATE_TO.get(Calendar.MONTH) + 1) + "-" + this.DATE_TO.get(Calendar.DAY_OF_MONTH)  + "'";
 
 	}
 	
