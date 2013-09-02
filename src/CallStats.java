@@ -10,10 +10,13 @@ import java.util.*;
  */
 @SuppressWarnings("unused")
 public  class CallStats {
+    private static HashMap<String, String> MobileCodes;
+
 
     protected final int TARGET;
     protected final int TARGET_PAIR;
     protected TreeMap<String, TargetStats> targetDb = new TreeMap<String, TargetStats>();
+
 
     private CallStats(){
         this.TARGET = 0;
@@ -23,7 +26,6 @@ public  class CallStats {
     public CallStats(int target){
         this.TARGET = target;
         this.TARGET_PAIR = Call.getTargetPair(TARGET);
-
     }
 
     public CallStats(int target, LinkedList<Call> calls){
@@ -106,6 +108,37 @@ public  class CallStats {
             System.out.println(tmp.callsCount + ": \t" + (User.checkName(tmp.number)));
         }
     }
+
+    private static void fillMobileCodes(){
+        MobileCodes.put("039", "Kyivstar");
+        MobileCodes.put("067", "Kyivstar");
+        MobileCodes.put("068", "Kyivstar");
+        MobileCodes.put("096", "Kyivstar");
+        MobileCodes.put("097", "Kyivstar");
+        MobileCodes.put("098", "Kyivstar");
+
+        MobileCodes.put("050", "MTC");
+        MobileCodes.put("066", "MTC");
+        MobileCodes.put("095", "MTC");
+        MobileCodes.put("099", "MTC");
+
+        MobileCodes.put("063", "Life:)");
+        MobileCodes.put("093", "Life:)");
+
+        MobileCodes.put("091", "Utel");
+    }
+
+    public void printMobileStatistics(LinkedList<Call> calls){
+        HashMap<String, Integer> stats = new HashMap<String, Integer>();
+        for (Call call:calls){
+            String operator = MobileCodes.get(call.getCall()[2].substring(0,2));
+            if (stats.containsKey(operator)){
+                stats.put(operator, Integer.valueOf(MobileCodes.get(operator)) + Integer.valueOf(call.getCall()[4]));
+            }
+            else stats.put(operator, Integer.valueOf(call.getCall()[4]));
+        }
+    }
+
 
     public String toString(){
         return "This unit has " + targetDb.keySet().size() + " keys and " + targetDb.values().size() + " values";
