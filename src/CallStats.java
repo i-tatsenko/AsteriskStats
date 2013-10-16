@@ -10,7 +10,7 @@ import java.util.*;
  */
 @SuppressWarnings("unused")
 public  class CallStats {
-    private static HashMap<String, String> MobileCodes;
+    private static HashMap<String, String> MobileCodes = new HashMap<String, String>();
 
 
     protected final int TARGET;
@@ -77,39 +77,18 @@ public  class CallStats {
     }
 
     public void printStatsSortByCallsCount() throws SQLException {
-        @SuppressWarnings("unused")
-        class temp implements Comparable<temp>{
-            int callsCount;
-            String number;
-
-            public int compareTo(temp c){                               //Return values changed to reverse ordering in Set
-                if (this.callsCount > c.callsCount) return -1;
-                else return 1;
-            }
-            private temp(){};
-
-            temp(int cc, String nb){
-                this.callsCount = cc;
-                this.number = nb;
-            }
-
-            public boolean equals(temp c){
-                return (this.number.equals(c.number));
-            }
-
-        }
-
-        TreeSet<temp> tempTree = new TreeSet<temp>();
+        TreeSet<TargetStats> tempTree = new TreeSet<TargetStats>();
         for (String key:targetDb.keySet()){
-            tempTree.add(new temp(targetDb.get(key).getCallsCount(), key));
+            tempTree.add(targetDb.get(key));
+            targetDb.get(key).setSourceNumber(key);
         }
 
-        for (temp tmp:tempTree){
-            System.out.println(tmp.callsCount + ": \t" + (User.checkName(tmp.number)));
+        for (TargetStats tmp:tempTree){
+            System.out.println(tmp.getCallsCount() + ": \t" + (User.checkName(tmp.getSourceNumber())));
         }
     }
 
-    private static void fillMobileCodes(){
+    static {
         MobileCodes.put("039", "Kyivstar");
         MobileCodes.put("067", "Kyivstar");
         MobileCodes.put("068", "Kyivstar");

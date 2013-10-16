@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: docent
@@ -10,5 +12,9 @@ public class ErrHandler {
         System.err.println("Program shutdown.");
         System.err.println("Operation system: " + System.getProperties().getProperty("os.name"));
         System.exit(0);
+    }
+
+    public static void SQLError(SQLException e){
+
     }
 }

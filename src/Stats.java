@@ -5,7 +5,7 @@
  * Time: 17:52
  * To change this template use File | Settings | File Templates.
  */
-public class Stats {
+public class Stats implements Comparable<Stats>{
     private int duration;
     private int callsCount;
     private final int TARGET;
@@ -28,5 +28,9 @@ public class Stats {
         return callsCount;
     }
 
+    public int compareTo(Stats tempStats){
+        if (this.callsCount > tempStats.callsCount)return 1;
+        else return -1;
+    }
 
 }

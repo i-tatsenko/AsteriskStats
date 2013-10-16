@@ -6,30 +6,6 @@ import java.sql.ResultSet;
 
 @SuppressWarnings("unused")
 public class AsteriskStats {
-
-
-	public static boolean hashToCsv(HashMap<String, Integer> db, String file_name, String head){
-		try{
-			PrintWriter file = new PrintWriter(new File(file_name));
-			file.println(head);
-			for (String keys:db.keySet()){
-				file.println(keys + ", " + db.get(keys)/60 + ", minutes\"");
-				
-			}
-			file.close();
-			return true;	
-		}catch (IOException e){
-			System.out.println(e);
-		}
-		
-		return false;
-	}
-	
-
-	
-	
-	
-	
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 
@@ -49,10 +25,10 @@ public class AsteriskStats {
         LinkedList<Call> calls = Call.callsFabric(rs);
 
 
-        CallStats stats = new CallStats(Call.SRC, calls);
+        CallStats stats = new CallStats(Call.DST, calls);
         stats.printStatsSortByCallsCount();
         System.out.println("Total amount of calls: " + Call.getCount());
-        String intUser = "114";
+        String intUser = "106";
         String popularDSTC[] = stats.popNumbers(intUser);
         System.out.println("The most popular numbers for " + intUser + " are:");
         for (String aPopularDSTC : popularDSTC) {

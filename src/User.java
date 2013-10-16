@@ -13,11 +13,18 @@ import java.util.HashMap;
 @SuppressWarnings("unused")
 public class User {
     private static HashMap<Integer, String> users = new HashMap<Integer, String>();
+    static {
+        try {
+            pullAsteriskUsers();
+        }catch (SQLException e){
+            ErrHandler.SQLError(e);
+        }
+    }
 
     private User(){}
 
 
-    public static HashMap<Integer, String> getAsteriskUsers() throws SQLException {
+    public static void pullAsteriskUsers() throws SQLException {
         DbProcessor dbProc = DbProcessor.getDbProcessor(new File(System.getProperty("user.home") + "/.AsteriskStats/settings.xml"), "asterisk");
         if (dbProc == null) ErrHandler.fileMissing(System.getProperty("user.home") + "/.AsteriskStats/settings.xml");
         ResultSet rs = dbProc.outQuery("extension, name", "users");
@@ -25,7 +32,6 @@ public class User {
         while(rs.next()){
             users.put(rs.getInt(1), rs.getString(2));
         }
-        return users;
     }
 
     public static HashMap<Integer, String> getUsers(){

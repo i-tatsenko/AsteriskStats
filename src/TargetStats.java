@@ -8,9 +8,10 @@ import java.util.HashMap;
  * Time: 14:50
  * To change this template use File | Settings | File Templates.
  */
-public class TargetStats {
+public class TargetStats implements Comparable<TargetStats> {
     private int duration;
     private int callsCount;
+    private String sourceNumber;
     private final int TARGET;
     private boolean dbCreated = false;
     private HashMap<String, Stats> targetBase = new HashMap<String, Stats>();
@@ -21,7 +22,6 @@ public class TargetStats {
         addTargetBase(call);
 
     }
-
 
     public void addTargetBase(Call call){
         if (targetBase.containsKey(call.getCall()[Call.getTargetPair(TARGET)])){
@@ -56,6 +56,14 @@ public class TargetStats {
         return callsCount;
     }
 
+    public String getSourceNumber(){
+        return this.sourceNumber;
+    }
+
+    public void setSourceNumber(String number){
+        this.sourceNumber = number;
+    }
+
     public void showTargetLogs(){
         for (String key : targetBase.keySet()){
             System.out.println("Key: " + key + " Value: " + targetBase.get(key).getCallsCount());
@@ -63,6 +71,9 @@ public class TargetStats {
 
     }
 
-
+    public int compareTo(TargetStats tempTargetStats){
+        if (this.callsCount > tempTargetStats.callsCount) return 1;
+        else return -1;
+    }
 
 }
