@@ -29,8 +29,10 @@ public class Stats implements Comparable<Stats>{
     }
 
     public int compareTo(Stats tempStats){
+        if (this == tempStats) return 0;
         if (this.callsCount > tempStats.callsCount)return 1;
         else return -1;
+
     }
 
 }

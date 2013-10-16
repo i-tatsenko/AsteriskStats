@@ -72,6 +72,7 @@ public class TargetStats implements Comparable<TargetStats> {
     }
 
     public int compareTo(TargetStats tempTargetStats){
+        if (this == tempTargetStats) return 0;
         if (this.callsCount > tempTargetStats.callsCount) return 1;
         else return -1;
     }

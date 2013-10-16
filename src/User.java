@@ -39,6 +39,7 @@ public class User {
     }
 
     public static String checkName(String number){
+        if ((number == null) || (number.equals("Anonymous"))) return number;
         if (users.keySet().contains(Integer.valueOf(number))) return users.get(Integer.valueOf(number)) + "<" + number +">";
         return number;
     }
