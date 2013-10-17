@@ -48,22 +48,14 @@ public  class CallStats {
 
     }
 
-    public String[] popNumbers(String targetNumber){                        //Change realisation!
-        String[] out = {"0:0", "0:0", "0:0"};
-        TargetStats targetBase = targetDb.get(targetNumber);
-        if (targetBase == null) return out;
-        for (String key : targetBase.getCallStats().keySet()){
-            if (Integer.valueOf(out[0].split(":")[1]) < targetBase.getCallStatsValue(key).getCallsCount()){
-                out[2] = out[1];
-                out[1] = out[0];
-                out[0] = key + ":" + targetBase.getCallStatsValue(key).getCallsCount();
-            }else if (Integer.valueOf(out[1].split(":")[1]) < targetBase.getCallStatsValue(key).getCallsCount()){
-                out[2] = out[1];
-                out[1] = key + ":" + targetBase.getCallStatsValue(key).getCallsCount();
-            }else if (Integer.valueOf(out[2].split(":")[1]) < targetBase.getCallStatsValue(key).getCallsCount()){
-                out[2] = key + ":" + targetBase.getCallStatsValue(key).getCallsCount();
-            }
+    public Stats[] popNumbers(String targetNumber){                        //Change realisation!
+        Collection<Stats> popNubmersColl = targetDb.get(targetNumber).getCallStats().values();
+        Stats[] out = new Stats[popNubmersColl.size()];
+        int i = 0;
+        for (Stats temp:popNubmersColl){
+            out[i++] = temp;
         }
+        Arrays.sort(out);
 
         return out;
     }

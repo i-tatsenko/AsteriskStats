@@ -61,19 +61,10 @@ public class Call{
         return callArray;
     }
 
-    public static int getTargetPair(int target){     //ReWrite!!!!!!!!!
-        switch (target){
-            case 0: {
-                return 1;
-            }
-            case 1: {
-                return 0;
-            }
-            default: {
-                return -1;
-            }
-
-        }
+    public static int getTargetPair(int target){
+        if (target == SRC) return DST;
+        if (target == DST) return SRC;
+        return 0;
     }
 
 
