@@ -12,6 +12,10 @@ public class AsteriskStats {
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
 
+        Gui interlico = Gui.createGui();
+        interlico.setVisible(true);
+
+        /*
         CallFilter cf = new CallFilter();
         cf.setSrcFilter("1__");
         //cf.setLastappFilter("Queue");
@@ -39,7 +43,7 @@ public class AsteriskStats {
             currentIndex = popNumbers.length - i;
             if (i > popNumbers.length)break;
             System.out.println(popNumbers[currentIndex].getCallsCount() + " \t times to: " + User.checkName(popNumbers[currentIndex].getTargetNumber()));
-        }
+        } */
     }
 }
 
