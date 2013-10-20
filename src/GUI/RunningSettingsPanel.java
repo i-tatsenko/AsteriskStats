@@ -8,18 +8,18 @@ import java.util.Calendar;
 
 
 public class RunningSettingsPanel extends JPanel {
-    private static Double MINIMUMSIZERATIO = 0.15;
-    private static Double SIZERATIO = 0.2;
-    private static Double MAXIMUMSIZERATIO = 0.25;
-    private static int PREFERREDWIDTH;
+    private static Double MINIMUM_SIZE_RATIO = 0.15;
+    private static Double SIZE_RATIO = 0.2;
+    private static Double MAXIMUM_SIZE_RATIO = 0.25;
+    private static int PREFERRED_WIDTH;
 
     RunningSettingsPanel(){
         super();
         this.setLayout(new FlowLayout());
-        this.setPreferredSize(Gui.getPreferredWidth(SIZERATIO));
-        this.PREFERREDWIDTH = new Double(Gui.getPreferredWidth(SIZERATIO).getWidth()).intValue();
-        this.setMinimumSize(Gui.getPreferredWidth(MINIMUMSIZERATIO));
-        this.setMaximumSize(Gui.getPreferredWidth(MAXIMUMSIZERATIO));
+        this.setPreferredSize(Gui.getPreferredWidth(SIZE_RATIO));
+        this.PREFERRED_WIDTH = new Double(Gui.getPreferredWidth(SIZE_RATIO).getWidth()).intValue();
+        this.setMinimumSize(Gui.getPreferredWidth(MINIMUM_SIZE_RATIO));
+        this.setMaximumSize(Gui.getPreferredWidth(MAXIMUM_SIZE_RATIO));
 
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -28,8 +28,8 @@ public class RunningSettingsPanel extends JPanel {
         PanelCheckbox filterEndDate = new PanelCheckbox("Фильтровать до:");
         Calendar startDate = Calendar.getInstance();
         startDate.set(Calendar.DAY_OF_MONTH, 1);
-        JDateChooser fromDate = new JDateChooser(startDate.getTime());
-        JDateChooser toDate = new JDateChooser(Calendar.getInstance().getTime());
+        JDateChooser fromDate = new PanelCalendar(startDate.getTime());
+        JDateChooser toDate = new PanelCalendar(Calendar.getInstance().getTime());
         PanelTable users = new PanelTable();
         users.setBackground(this.getBackground());
 
@@ -41,25 +41,41 @@ public class RunningSettingsPanel extends JPanel {
         this.add(toDate);
         this.add(users);
 
-
-        System.out.print(fromDate.getSize());
     }
 
+    class PanelCalendar extends JDateChooser{
+        PanelCalendar(){
+            super();
+            this.setPreferredSize(new Dimension(110, this.getFont().getSize() + 7));
+            this.setAlignmentX(SwingConstants.CENTER);
+            this.setAlignmentY(SwingConstants.CENTER);
+        }
+
+        PanelCalendar(java.util.Date time){
+        super(time);
+        this.setPreferredSize(new Dimension(110, this.getFont().getSize() + 7));
+        this.setAlignmentX(JDateChooser.CENTER_ALIGNMENT);
+        this.setAlignmentY(JDateChooser.CENTER_ALIGNMENT);
+        }
+    }
 
     class PanelLabel extends JLabel{
         private PanelLabel(){}
 
         PanelLabel(String text){
             super(text);
-            this.setPreferredSize(new Dimension(PREFERREDWIDTH, this.getFont().getSize()));
+            this.setPreferredSize(new Dimension(PREFERRED_WIDTH, this.getFont().getSize()));
             this.setHorizontalAlignment(SwingConstants.CENTER);
+
         }
+
+
     }
 
     class PanelCheckbox extends JCheckBox{
         PanelCheckbox(){
             super();
-           // this.setPreferredSize(new Dimension(PREFERREDWIDTH - 5, this.getFont().getSize() + 5));
+           // this.setPreferredSize(new Dimension(PREFERRED_WIDTH - 5, this.getFont().getSize() + 5));
         }
 
         PanelCheckbox(String text){
@@ -73,13 +89,14 @@ public class RunningSettingsPanel extends JPanel {
     class PanelTable extends JTable{
         PanelTable(){
             super();
-            this.setPreferredSize(new Dimension(PREFERREDWIDTH - 2, 200));
-            this.setModel(new UsersTableDataModel());
+            this.setPreferredSize(new Dimension(PREFERRED_WIDTH - 2, 500));
+            this.setModel(new UsersTableDataModel(this));
             this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             this.getColumnModel().getColumn(0).setPreferredWidth(10);
 
+
         }
     }
-
-
 }
+
+

@@ -1,3 +1,4 @@
+package DataConnector;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
+
+import Errors.ErrHandler;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -37,9 +40,9 @@ public class DbProcessor {
 			
 			
 		}catch (JDOMException e){
-			ExceptionHandler.ErrorOutput(e, System.out);
+			ErrHandler.ErrorOutput(e, System.out);
 		}catch (IOException e){
-			ExceptionHandler.ErrorOutput(e, System.out);}
+			ErrHandler.ErrorOutput(e, System.out);}
     }
 
     public static DbProcessor getDbProcessor(File settingsXMLFile, String dbName){
@@ -54,7 +57,7 @@ public class DbProcessor {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://" + this.host + "/" + this.db + "?" + "user=" + this.dbUser + "&password=" + this.dbPassword);
 		}catch (SQLException e){
-			 ExceptionHandler.ErrorOutput(e, System.out);
+			 ErrHandler.ErrorOutput(e, System.out);
 		}
 		return conn;
 	}
@@ -70,7 +73,7 @@ public class DbProcessor {
 
 			
 		}catch (SQLException e){
-			ExceptionHandler.ErrorOutput(e, System.out); 
+			ErrHandler.ErrorOutput(e, System.out);
 		}
 		return null;
 	}
@@ -82,7 +85,7 @@ public class DbProcessor {
 
 
         }catch (SQLException e){
-            ExceptionHandler.ErrorOutput(e, System.out);
+            ErrHandler.ErrorOutput(e, System.out);
         }
         return null;
     }

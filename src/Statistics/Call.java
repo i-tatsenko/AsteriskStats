@@ -1,6 +1,9 @@
+package Statistics;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import Errors.ErrHandler;
 
 public class Call{
 
@@ -51,7 +54,7 @@ public class Call{
                 list.add(call);
             }
         }catch (SQLException e){
-            ExceptionHandler.ErrorOutput(e, System.out);
+            ErrHandler.ErrorOutput(e, System.out);
         }
 
         return list;

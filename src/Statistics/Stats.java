@@ -1,10 +1,5 @@
-/**
- * Created with IntelliJ IDEA.
- * User: docent
- * Date: 05.07.13
- * Time: 17:52
- * To change this template use File | Settings | File Templates.
- */
+package Statistics;
+
 public class Stats implements Comparable<Stats>{
     private int duration;
     private int callsCount;
@@ -14,7 +9,7 @@ public class Stats implements Comparable<Stats>{
     Stats(int target, Call call){
         TARGET = Call.getTargetPair(target);
         addCall(call);
-        if ((targetNumber != null)&&(!targetNumber.equals(call.getCall()[TARGET]))) System.err.println("Smthnig went wrong in Stats.class with target number assigning");
+        if ((targetNumber != null)&&(!targetNumber.equals(call.getCall()[TARGET]))) System.err.println("Smthnig went wrong in Statss.class with target number assigning");
         targetNumber = call.getCall()[target];
     }
 

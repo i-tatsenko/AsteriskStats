@@ -3,13 +3,7 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Ivan
- * Date: 10/18/13
- * Time: 4:52 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public  class Gui extends JFrame {
     private final static Double SCREENRATIO = 0.7;
     private static  Gui mainWindow;

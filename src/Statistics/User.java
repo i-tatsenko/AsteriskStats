@@ -1,17 +1,21 @@
+package Statistics;
+
+import DataConnector.DbProcessor;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.TreeSet;
+
+import Errors.ErrHandler;
 
 
-/**
- * Created with IntelliJ IDEA.
- * User: docent
- * Date: 02.09.13
- * Time: 11:56
- */
+
 @SuppressWarnings("unused")
-public class User {
+public class User implements Comparable<User> {
+    private int number;
+    private String name;
+
     private static HashMap<Integer, String> users = new HashMap<Integer, String>();
     static {
         try {
@@ -22,6 +26,11 @@ public class User {
     }
 
     private User(){}
+
+    public User(int number, String name){
+        this.number = number;
+        this.name = name;
+    }
 
 
     public static void pullAsteriskUsers() throws SQLException {
@@ -34,8 +43,12 @@ public class User {
         }
     }
 
-    public static HashMap<Integer, String> getUsers(){
-        return users;
+    public static TreeSet<User> getUsers(){
+        TreeSet<User> usersSet = new TreeSet<User>();
+        for (int number:users.keySet()){
+            usersSet.add(new User(number, users.get(number)));
+        }
+        return usersSet;
     }
 
     public static String checkName(String number){
@@ -44,5 +57,18 @@ public class User {
         return number;
     }
 
+    public int compareTo(User user){
+        if (this.number > user.number) return 1;
+        if (this.number < user.number) return -1;
+        return 0;
+    }
+
+    public String getNumber(){
+        return String.valueOf(number);
+    }
+
+    public String getName(){
+        return this.name;
+    }
 
 }

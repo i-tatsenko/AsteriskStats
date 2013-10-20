@@ -1,11 +1,12 @@
+package Errors;
+
+import org.jdom2.JDOMException;
+
+import java.io.IOException;
+import java.io.PrintStream;
 import java.sql.SQLException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: docent
- * Date: 02.09.13
- * Time: 12:08
- */
+
 public class ErrHandler {
     public static void fileMissing(String file){
         System.err.println("There is no settings file: " + file);
@@ -16,5 +17,17 @@ public class ErrHandler {
 
     public static void SQLError(SQLException e){
 
+    }
+
+    public static void ErrorOutput(JDOMException e, PrintStream out){
+        out.println(e);
+    }
+
+    public static void ErrorOutput(IOException e, PrintStream out){
+        out.println(e);
+    }
+
+    public static void ErrorOutput(SQLException e, PrintStream out){
+        out.println(e);
     }
 }

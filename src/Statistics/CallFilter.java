@@ -1,5 +1,6 @@
+package Statistics;
 
-public class CallFilter extends Call{
+public class CallFilter extends Call {
 	PeriodToString callsPeriod = null;
     private int onlyNightCalls = 0;
 
@@ -59,17 +60,17 @@ public class CallFilter extends Call{
 	public String toString(){
 		String temp = "";
 		String and = "";
-		if (callArray[SRC] != null){
-			temp += "src LIKE '" + callArray[SRC] + "'";
+		if (callArray[Call.SRC] != null){
+			temp += "src LIKE '" + callArray[Call.SRC] + "'";
 			and = " AND ";
 		}
-		if (callArray[DST] != null){
-			temp += and + "dst LIKE '" + callArray[DST] + "'";
+		if (callArray[Call.DST] != null){
+			temp += and + "dst LIKE '" + callArray[Call.DST] + "'";
 			and = " AND ";
 		
 		}
-		if (!callArray[DURATION].equals("0")){
-			temp += and + "duration >= '" + callArray[DST] + "'";
+		if (!callArray[Call.DURATION].equals("0")){
+			temp += and + "duration >= '" + callArray[Call.DST] + "'";
 			and = " AND ";
 		}
 		if (this.callsPeriod != null){
@@ -77,8 +78,8 @@ public class CallFilter extends Call{
             and = " AND ";
 		}
 
-        if (callArray[LASTAPP] != null){
-            temp += and + "lastapp = '" + callArray[LASTAPP] + "'";
+        if (callArray[Call.LASTAPP] != null){
+            temp += and + "lastapp = '" + callArray[Call.LASTAPP] + "'";
         }
 
         switch (onlyNightCalls) {

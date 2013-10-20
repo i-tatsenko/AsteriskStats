@@ -1,13 +1,8 @@
-import java.lang.annotation.Target;
+package Statistics;
+
 import java.util.HashMap;
 
-/**
- * Created with IntelliJ IDEA.
- * User: docent
- * Date: 05.07.13
- * Time: 14:50
- * To change this template use File | Settings | File Templates.
- */
+
 public class TargetStats implements Comparable<TargetStats> {
     private int duration;
     private int callsCount;

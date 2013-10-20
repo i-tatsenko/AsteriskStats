@@ -1,13 +1,9 @@
+package Statistics;
+
 import java.sql.SQLException;
 import java.util.*;
 
-/**
- *
- *
- * User: Docent
- * Date: 30.06.13
- * Time: 22:38
- */
+
 @SuppressWarnings("unused")
 public  class CallStats {
     private static HashMap<String, String> MobileCodes = new HashMap<String, String>();
@@ -49,7 +45,9 @@ public  class CallStats {
     }
 
     public Stats[] popNumbers(String targetNumber){                        //Change realisation!
-        Collection<Stats> popNubmersColl = targetDb.get(targetNumber).getCallStats().values();
+        try{
+            Collection<Stats> popNubmersColl = targetDb.get(targetNumber).getCallStats().values();
+
         Stats[] out = new Stats[popNubmersColl.size()];
         int i = 0;
         for (Stats temp:popNubmersColl){
@@ -58,6 +56,10 @@ public  class CallStats {
         Arrays.sort(out);
 
         return out;
+        }catch(NullPointerException e){
+            System.err.print("There is no statistic for " + targetNumber);
+        }
+        return null;
     }
 
 
