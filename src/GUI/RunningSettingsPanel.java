@@ -5,6 +5,7 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class RunningSettingsPanel extends JPanel {
@@ -12,6 +13,10 @@ public class RunningSettingsPanel extends JPanel {
     private static Double SIZE_RATIO = 0.2;
     private static Double MAXIMUM_SIZE_RATIO = 0.25;
     private static int PREFERRED_WIDTH;
+    private static JDateChooser FROM_DATE;
+    private static JDateChooser TO_DATE;
+    private static JCheckBox FROM_CHECK_BOX;
+    private static JCheckBox TO_CHECK_BOX;
 
     RunningSettingsPanel(){
         super();
@@ -25,11 +30,15 @@ public class RunningSettingsPanel extends JPanel {
 
         PanelLabel opisanie = new PanelLabel("Параметры выборки данных.");
         PanelCheckbox filterStartDate = new PanelCheckbox("Фильтровать от:");
+        FROM_CHECK_BOX = filterStartDate;
         PanelCheckbox filterEndDate = new PanelCheckbox("Фильтровать до:");
+        TO_CHECK_BOX = filterEndDate;
         Calendar startDate = Calendar.getInstance();
         startDate.set(Calendar.DAY_OF_MONTH, 1);
         JDateChooser fromDate = new PanelCalendar(startDate.getTime());
+        FROM_DATE = fromDate;
         JDateChooser toDate = new PanelCalendar(Calendar.getInstance().getTime());
+        TO_DATE = toDate;
         PanelTable users = new PanelTable();
         users.setBackground(this.getBackground());
 
@@ -42,6 +51,23 @@ public class RunningSettingsPanel extends JPanel {
         this.add(users);
 
     }
+
+    public static Date getFromDate(){
+        return FROM_DATE.getDate();
+    }
+
+    public static Date getToDate(){
+        return TO_DATE.getDate();
+    }
+
+    public static boolean getFromCheckBoxState(){
+        return FROM_CHECK_BOX.isEnabled();
+    }
+
+    public static boolean getToCheckBoxState(){
+        return TO_CHECK_BOX.isEnabled();
+    }
+
 
     class PanelCalendar extends JDateChooser{
         PanelCalendar(){
@@ -96,6 +122,10 @@ public class RunningSettingsPanel extends JPanel {
 
 
         }
+    }
+
+    public static Double getSizeRatio(){
+        return SIZE_RATIO;
     }
 }
 

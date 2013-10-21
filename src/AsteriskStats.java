@@ -1,10 +1,13 @@
 import DataConnector.DbProcessor;
 import Errors.ErrHandler;
 import GUI.Gui;
+import GUI.RunningSettingsPanel;
 import Statistics.Stats;
 import Statistics.User;
 import com.sun.org.glassfish.external.statistics.Statistic;
 
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,13 +23,11 @@ public class AsteriskStats {
         cf.setSrcFilter("1__");
         //cf.setLastappFilter("Queue");
 		//cf.setDstFilter("333");
-		cf.setCallsPeriod(Statistics.PeriodToString.daysAgo(1));
+		cf.setCallsPeriod(Statistics.PeriodToString.thisMonth());
         //cf.setDurationFilter(110);
         //cf.setOnlyNightCalls();
 
-		DbProcessor dbProc = DbProcessor.getDbProcessor(new File(System.getProperty("user.home") + "/.AsteriskStats/settings.xml"), "asteriskcdrdb");
-        if (dbProc == null) ErrHandler.fileMissing(System.getProperty("user.home") + "/.AsteriskStats/settings.xml");
-        ResultSet rs = dbProc.outQuery("src, dst, lastapp, duration", "cdr", cf.toString());
+        ResultSet rs = DbProcessor.getConnector().outQuery("src, dst, lastapp, billsec, calldate", "cdr", cf.toString());
         LinkedList<Statistics.Call> calls = Statistics.Call.callsFabric(rs);
 
         Statistics.CallStats stats = new Statistics.CallStats(Statistics.Call.SRC, calls);
@@ -37,8 +38,13 @@ public class AsteriskStats {
         System.out.println(User.checkName(intUser) + " called:");
         Stats[] popNumbers = stats.popNumbers(intUser);
 
+        try{ UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
+        catch (Exception e){}
+
         Gui interlico = Gui.createGui();
         interlico.setVisible(true);
+        interlico.setData(stats, calls);
+        System.out.print(RunningSettingsPanel.getFromDate());
     }
 
 }

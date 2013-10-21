@@ -89,6 +89,12 @@ public class DbProcessor {
         }
         return null;
     }
+
+    public static DbProcessor getConnector(){
+        DbProcessor dbProc = DbProcessor.getDbProcessor(new File(System.getProperty("user.home") + "/.AsteriskStats/settings.xml"), "asteriskcdrdb");
+        if (dbProc == null) ErrHandler.fileMissing(System.getProperty("user.home") + "/.AsteriskStats/settings.xml");
+        return dbProc;
+    }
 	
 
 }

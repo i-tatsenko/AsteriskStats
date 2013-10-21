@@ -19,6 +19,7 @@ public class Call{
 	public static int DST = 1;
     public static int LASTAPP = 2;
 	public static int DURATION = 3;
+    public static int CALL_DATE = 4;
 
 
 
@@ -31,8 +32,8 @@ public class Call{
 
     }
 
-    public Call(String src, String dst, int duration){
-        this.callArray = new String[]{removeLineEnterPrefix(src), removeLineEnterPrefix(dst), lastApp, String.valueOf(duration)};
+    public Call(String src, String dst, int duration, String calldate){
+        this.callArray = new String[]{removeLineEnterPrefix(src), removeLineEnterPrefix(dst), lastApp, String.valueOf(duration), calldate};
         this.id = ++count;
     }
 
@@ -50,7 +51,7 @@ public class Call{
         LinkedList<Call> list = new LinkedList<Call>();
         try {
             while (rs.next()){
-                Call call = new Call(rs.getString(1), rs.getString(2), rs.getInt(4));
+                Call call = new Call(rs.getString(1), rs.getString(2), rs.getInt(4), rs.getString(5));
                 list.add(call);
             }
         }catch (SQLException e){

@@ -50,7 +50,7 @@ public class UsersTableDataModel implements TableModel {
 
     @Override
     public Class<?> getColumnClass(int i) {
-        return new String().getClass();
+        return String.class;
     }
 
     @Override
