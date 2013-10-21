@@ -1,9 +1,14 @@
 package GUI;
 
 import com.toedter.calendar.JDateChooser;
+import sun.applet.Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -61,27 +66,31 @@ public class RunningSettingsPanel extends JPanel {
     }
 
     public static boolean getFromCheckBoxState(){
-        return FROM_CHECK_BOX.isEnabled();
+        return FROM_CHECK_BOX.isSelected();
     }
 
     public static boolean getToCheckBoxState(){
-        return TO_CHECK_BOX.isEnabled();
+        return TO_CHECK_BOX.isSelected();
     }
 
 
     class PanelCalendar extends JDateChooser{
         PanelCalendar(){
-            super();
-            this.setPreferredSize(new Dimension(110, this.getFont().getSize() + 7));
-            this.setAlignmentX(SwingConstants.CENTER);
-            this.setAlignmentY(SwingConstants.CENTER);
+            this(Calendar.getInstance().getTime());
+
         }
 
         PanelCalendar(java.util.Date time){
-        super(time);
-        this.setPreferredSize(new Dimension(110, this.getFont().getSize() + 7));
-        this.setAlignmentX(JDateChooser.CENTER_ALIGNMENT);
-        this.setAlignmentY(JDateChooser.CENTER_ALIGNMENT);
+            super(time);
+            this.setPreferredSize(new Dimension(110, this.getFont().getSize() + 7));
+            this.setAlignmentX(JDateChooser.CENTER_ALIGNMENT);
+            this.setAlignmentY(JDateChooser.CENTER_ALIGNMENT);
+            this.addPropertyChangeListener(new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    MainMethods.AsteriskStats.updateInfo();
+                }
+            });
         }
     }
 
@@ -108,7 +117,12 @@ public class RunningSettingsPanel extends JPanel {
             super(text);
             this.setPreferredSize(new Dimension(150, this.getFont().getSize() + 5));
             this.setHorizontalAlignment(SwingConstants.LEFT);
-
+            this.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    MainMethods.AsteriskStats.updateInfo();
+                }
+            });
         }
     }
 

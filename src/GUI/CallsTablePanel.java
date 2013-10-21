@@ -43,4 +43,8 @@ public class CallsTablePanel extends JScrollPane{
             this.getColumnModel().getColumn(2).setPreferredWidth(5);
         }
     }
+
+    public static void updateTable(){
+        callsTablePanel.getViewport().getView().update(callsTablePanel.getViewport().getView().getGraphics());
+    }
 }
