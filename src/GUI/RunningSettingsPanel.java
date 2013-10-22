@@ -53,8 +53,19 @@ public class RunningSettingsPanel extends JPanel {
         filterStartDate.setSelected(true);
         this.add(filterEndDate);
         this.add(toDate);
-        this.add(users);
+        this.add(new UsersPanel(users));
 
+    }
+
+    class UsersPanel extends JScrollPane{
+        UsersPanel(){
+            this(null);
+        }
+
+        UsersPanel(PanelTable table){
+            super(table);
+            this.setPreferredSize(new Dimension(RunningSettingsPanel.PREFERRED_WIDTH, 500));
+        }
     }
 
     public static Date getFromDate(){
@@ -88,6 +99,7 @@ public class RunningSettingsPanel extends JPanel {
             this.addPropertyChangeListener(new PropertyChangeListener() {
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
+                    if ((evt.getOldValue() != null) && (!evt.getOldValue().equals(evt.getNewValue())))
                     MainMethods.AsteriskStats.updateInfo();
                 }
             });
@@ -132,7 +144,8 @@ public class RunningSettingsPanel extends JPanel {
             this.setPreferredSize(new Dimension(PREFERRED_WIDTH - 2, 500));
             this.setModel(new UsersTableDataModel(this));
             this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            this.getColumnModel().getColumn(0).setPreferredWidth(10);
+            this.getColumnModel().getColumn(0).setPreferredWidth(5);
+            this.getColumnModel().getColumn(1).setPreferredWidth(10);
 
 
         }
