@@ -1,7 +1,8 @@
 package GUI;
 
+import GUI.TableModels.AbstractTableModel;
+import GUI.TableModels.UsersTableDataModel;
 import com.toedter.calendar.JDateChooser;
-import sun.applet.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,7 @@ public class RunningSettingsPanel extends JPanel {
     private static JDateChooser TO_DATE;
     private static JCheckBox FROM_CHECK_BOX;
     private static JCheckBox TO_CHECK_BOX;
+    private static JTable USERS_TABLE;
 
     RunningSettingsPanel(){
         super();
@@ -46,6 +48,7 @@ public class RunningSettingsPanel extends JPanel {
         TO_DATE = toDate;
         PanelTable users = new PanelTable();
         users.setBackground(this.getBackground());
+        USERS_TABLE = users;
 
         this.add(opisanie);
         this.add(filterStartDate);
@@ -84,6 +87,9 @@ public class RunningSettingsPanel extends JPanel {
         return TO_CHECK_BOX.isSelected();
     }
 
+    public static JTable getUsersTable(){
+        return USERS_TABLE;
+    };
 
     class PanelCalendar extends JDateChooser{
         PanelCalendar(){
@@ -142,12 +148,8 @@ public class RunningSettingsPanel extends JPanel {
         PanelTable(){
             super();
             this.setPreferredSize(new Dimension(PREFERRED_WIDTH - 2, 500));
-            this.setModel(new UsersTableDataModel(this));
+            this.setModel(new UsersTableDataModel());
             this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            this.getColumnModel().getColumn(0).setPreferredWidth(5);
-            this.getColumnModel().getColumn(1).setPreferredWidth(10);
-
-
         }
     }
 

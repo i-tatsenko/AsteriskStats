@@ -42,7 +42,7 @@ public class AsteriskStats {
         ResultSet rs = DbProcessor.getConnector().outQuery("src, dst, lastapp, billsec, calldate", "cdr", cf.toString());
         LinkedList<Statistics.Call> calls = Statistics.Call.callsFabric(rs);
         MainWindow.setData(null, calls);
-        CallsTablePanel.updateTable();
+
     }
 
     private static String[] getTimePeriod(){

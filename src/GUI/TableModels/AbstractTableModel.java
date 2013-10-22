@@ -1,34 +1,14 @@
-package GUI;
+package GUI.TableModels;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import java.awt.*;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
 
-import Statistics.User;
 
-public class UsersTableDataModel implements TableModel {
-    private static String[] columnNames = {"Number", "Name"};
-    private static String[][] data;
-
-    public UsersTableDataModel(JTable table){
-        data = new String[2][2];
-       TreeSet<User> usersSet =  User.getUsers();
-        if (!usersSet.isEmpty()){
-            data = new String[usersSet.size()][2];
-            int i=0;
-            for (User user:usersSet){
-                data[i][0] = user.getNumber();
-                data[i++][1] = user.getName();
-            }
-            table.setPreferredSize(new Dimension(new Double(table.getPreferredSize().getWidth()).intValue(), (data.length) * table.getRowHeight()));
-
-        }
-
-    }
+public abstract class AbstractTableModel implements TableModel{
+    protected    String[] columnNames;
+    protected   String[][] data;
 
     @Override
     public int getRowCount() {
@@ -78,4 +58,9 @@ public class UsersTableDataModel implements TableModel {
     public void removeTableModelListener(TableModelListener tableModelListener) {
 
     }
+
+    public abstract <List> void setData(LinkedList l);
+
+    protected abstract void setColumnNames();
+
 }

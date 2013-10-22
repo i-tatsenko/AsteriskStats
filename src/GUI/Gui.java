@@ -1,5 +1,7 @@
 package GUI;
 
+import GUI.TableModels.AbstractTableModel;
+import GUI.TableModels.CallLogTableModel;
 import Statistics.Call;
 import Statistics.CallStats;
 import javax.swing.*;
@@ -49,8 +51,12 @@ public  class Gui extends JFrame {
     }
 
     public void setData(CallStats stats, LinkedList<Call> calls){
-        CallLogTableModel.setData(calls);
-        CallsTablePanel.getCallsTablePanel().resizeTable();
+        CallsTablePanel.getCallsTablePanel().updateTable(calls);
+
+
+
+
+
     }
 
 }

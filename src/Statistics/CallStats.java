@@ -44,7 +44,7 @@ public  class CallStats {
 
     }
 
-    public Stats[] popNumbers(String targetNumber){                        //Change realisation!
+    public Stats[] popNumbers(String targetNumber){
         try{
             Collection<Stats> popNubmersColl = targetDb.get(targetNumber).getCallStats().values();
 

@@ -2,8 +2,11 @@ package GUI;
 
 
 
+import GUI.TableModels.AbstractTableModel;
+import GUI.TableModels.CallLogTableModel;
+import Statistics.Call;
+
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -11,20 +14,22 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 
 public class CallsTablePanel extends JScrollPane{
     private static int WIDTH;
     private static int HEIGHT;
     private static CallsTablePanel callsTablePanel;
+    private static PanelCallsTable CALLS_TABLE;
     CallsTablePanel(){
         super();
         WIDTH = new Double(Gui.getMainWindow().getSize().width * 0.71).intValue();
         HEIGHT = new Double(Gui.getMainWindow().getHeight() * 0.5).intValue();
-
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        this.setViewportView(new PanelCallsTable());
+        PanelCallsTable callsTable = new PanelCallsTable();
+        CALLS_TABLE = callsTable;
+        this.setViewportView(callsTable);
         callsTablePanel = this;
     }
 
@@ -44,16 +49,12 @@ public class CallsTablePanel extends JScrollPane{
             setPreferredSize(new Dimension(WIDTH, 500));
             this.setBackground(Gui.getMainWindow().getBackground());
             setModel(new CallLogTableModel());
-            this.getColumnModel().getColumn(0).setPreferredWidth(4);
-            this.getColumnModel().getColumn(1).setPreferredWidth(10);
-            this.getColumnModel().getColumn(2).setPreferredWidth(10);
-            this.getColumnModel().getColumn(3).setPreferredWidth(1);
             CallsLogSorter sorter = new CallsLogSorter(this.getModel());
             this.setRowSorter(sorter);
         }
     }
 
-    static class CallsLogSorter extends TableRowSorter<TableModel>{
+    class CallsLogSorter extends TableRowSorter<TableModel>{
 
         CallsLogSorter(TableModel model){
             super(model);
@@ -108,9 +109,11 @@ public class CallsTablePanel extends JScrollPane{
 
     }
 
-    public static void updateTable(){
-        callsTablePanel.getViewport().getView().update(callsTablePanel.getViewport().getView().getGraphics());
-        JTable a = (JTable)callsTablePanel.getViewport().getView();
+    public void updateTable(LinkedList<Call> calls){
+        AbstractTableModel logTableModel = (AbstractTableModel)CALLS_TABLE.getModel();
+        logTableModel.setData(calls);
+        resizeTable();
+        callsTablePanel.update(CALLS_TABLE.getGraphics());
 
     }
 }
