@@ -1,9 +1,9 @@
 package GUI;
 
-import GUI.TableModels.AbstractTableModel;
-import GUI.TableModels.CallLogTableModel;
 import Statistics.Call;
 import Statistics.CallStats;
+import Statistics.Stats;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
@@ -12,6 +12,9 @@ import java.util.LinkedList;
 public  class Gui extends JFrame {
     private final static Double SCREEN_RATIO = 0.7;
     private static  Gui mainWindow;
+    private static LinkedList<Call> callsList;
+
+
     private  Gui(){
         super();
         mainWindow = this;
@@ -50,14 +53,29 @@ public  class Gui extends JFrame {
         return mainWindow;
     }
 
-    public void setData(CallStats stats, LinkedList<Call> calls){
-        CallsTablePanel.getCallsTablePanel().updateTable(calls);
-
-
-
-
-
+    public void setData(LinkedList<Call> calls){
+        if (calls != null)CallsTablePanel.getCallsTablePanel().updateTable(calls);
+        callsList = calls;
+        RunningSettingsPanel.getUsersTable().setRowSelectionInterval(0,0);
     }
 
+    public static class CallLogStats{
+        static LinkedList<Call> callsList;
+        static CallStats SRCCallStats;
+        static CallStats DSTCallStats;
+
+        public static Stats[] getPopNumber(int srcOrDst,String number){
+            if (Gui.callsList == null) return null;
+            if ((callsList == null) || callsList != Gui.callsList) pullData();
+            if (srcOrDst == Call.SRC) return SRCCallStats.popNumbers(number);
+            else return DSTCallStats.popNumbers(number);
+        }
+
+        private static void pullData(){
+            callsList = Gui.callsList;
+            SRCCallStats = new CallStats(Call.SRC, callsList);
+            DSTCallStats = new CallStats(Call.DST, callsList);
+        }
+    }
 }
 

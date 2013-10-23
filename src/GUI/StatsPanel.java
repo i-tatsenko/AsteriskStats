@@ -9,5 +9,6 @@ public class StatsPanel extends JPanel {
         super();
         setLayout(new BorderLayout());
         add(new CallsTablePanel(), BorderLayout.NORTH);
+        add(new PopNumbersPanel(), BorderLayout.SOUTH);
     }
 }

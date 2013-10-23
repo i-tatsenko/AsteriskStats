@@ -12,11 +12,13 @@ import java.util.LinkedList;
 public class CallLogTableModel extends AbstractTableModel {
 
     public CallLogTableModel(){
-        setColumnNames();
+        setColumnNames(new String[]{"Время", "Кто", "Куда", "Длительность"});
         data = new String[1][4];
     }
 
-      public <List>  void setData(LinkedList calls){
+      public <List>  void setData(LinkedList callsList){
+          LinkedList<Call> calls = (LinkedList<Call>)callsList.clone();
+
         data = new String[calls.size()][4];
         int i = 0;
         String[] callArray;
@@ -33,8 +35,8 @@ public class CallLogTableModel extends AbstractTableModel {
       }
 
     @Override
-    protected void setColumnNames() {
-        columnNames = new String[]{"Время", "Кто", "Куда", "Длительность"};
+    protected void setColumnNames(String[] columnNames) {
+        this.columnNames = columnNames;
     }
 
 

@@ -80,7 +80,6 @@ public class CallsTablePanel extends JScrollPane{
 
                     Integer cutNumber(String s){
                         if (s.contains("<")) s = s.substring(s.indexOf('<') + 1, s.indexOf('>'));
-                        System.out.print(s);
                         return Integer.valueOf(s);
                     }
                 };

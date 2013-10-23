@@ -14,7 +14,7 @@ public class UsersTableDataModel extends AbstractTableModel {
 
      public UsersTableDataModel(){
          setData(null);
-         setColumnNames();
+         setColumnNames(new String[]{"Номер", "Пользователь"});
     }
     @Override
     public <List> void setData(LinkedList l) {
@@ -31,7 +31,7 @@ public class UsersTableDataModel extends AbstractTableModel {
     }
 
     @Override
-    protected void setColumnNames() {
-        columnNames = new String[]{"Номер", "Пользователь"};
+    protected void setColumnNames(String[] columnNames) {
+        this.columnNames = columnNames;
     }
 }

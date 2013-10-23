@@ -4,7 +4,9 @@ import DataConnector.DbProcessor;
 import GUI.CallsTablePanel;
 import GUI.Gui;
 import GUI.RunningSettingsPanel;
+import Statistics.Call;
 import Statistics.CallFilter;
+import Statistics.CallStats;
 
 import javax.swing.*;
 import java.sql.ResultSet;
@@ -41,7 +43,7 @@ public class AsteriskStats {
 
         ResultSet rs = DbProcessor.getConnector().outQuery("src, dst, lastapp, billsec, calldate", "cdr", cf.toString());
         LinkedList<Statistics.Call> calls = Statistics.Call.callsFabric(rs);
-        MainWindow.setData(null, calls);
+        MainWindow.setData(calls);
 
     }
 

@@ -53,13 +53,30 @@ public  class CallStats {
         for (Stats temp:popNubmersColl){
             out[i++] = temp;
         }
-        Arrays.sort(out);
+        sort(out);
 
         return out;
         }catch(NullPointerException e){
             System.err.print("There is no statistic for " + targetNumber);
         }
         return null;
+    }
+
+    private void sort(Stats[] array){
+        Stats temp;
+        boolean wasChanged = true;
+        while (wasChanged){
+            wasChanged = false;
+            for (int i = 1;i < array.length;i++){
+                if(array[i].getCallsCount() < array[i-1].getCallsCount()){
+                    temp = array[i];
+                    array[i] = array[i-1];
+                    array[i-1] = temp;
+                    if (i > 2)i -= 2;
+                    wasChanged = true;
+                }
+            }
+        }
     }
 
 

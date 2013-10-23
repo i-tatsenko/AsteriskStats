@@ -1,10 +1,12 @@
 package GUI;
 
-import GUI.TableModels.AbstractTableModel;
 import GUI.TableModels.UsersTableDataModel;
+import Statistics.Call;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -150,6 +152,17 @@ public class RunningSettingsPanel extends JPanel {
             this.setPreferredSize(new Dimension(PREFERRED_WIDTH - 2, 500));
             this.setModel(new UsersTableDataModel());
             this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            this.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    int row = getSelectedRow();
+                    String user = (String)getValueAt(row, 0);
+                    PopNumbersPanel.getSRCTable().setData(Gui.CallLogStats.getPopNumber(Call.SRC, user));
+                    PopNumbersPanel.getDSTTable().setData(Gui.CallLogStats.getPopNumber(Call.DST, user));
+                }
+            });
+
         }
     }
 

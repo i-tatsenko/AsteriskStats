@@ -1,6 +1,6 @@
 package Statistics;
 
-public class Stats implements Comparable<Stats>{
+public class Stats {
     private int duration;
     private int callsCount;
     private final int TARGET;
@@ -28,13 +28,6 @@ public class Stats implements Comparable<Stats>{
 
     public String getTargetNumber(){
         return targetNumber;
-    }
-
-    public int compareTo(Stats tempStats){
-        if (this.targetNumber.equals(tempStats.targetNumber)) return 0;
-        if (this.callsCount > tempStats.callsCount)return 1;
-        else return -1;
-
     }
 
 }

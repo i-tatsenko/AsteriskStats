@@ -61,6 +61,6 @@ public abstract class AbstractTableModel implements TableModel{
 
     public abstract <List> void setData(LinkedList l);
 
-    protected abstract void setColumnNames();
+    protected abstract void setColumnNames(String[] columnNames);
 
 }
