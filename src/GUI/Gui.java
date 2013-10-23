@@ -19,7 +19,7 @@ public  class Gui extends JFrame {
         super();
         mainWindow = this;
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setNormalWindowsize(this);
         this.setLayout(new BorderLayout());
         this.add(new RunningSettingsPanel(), BorderLayout.WEST);

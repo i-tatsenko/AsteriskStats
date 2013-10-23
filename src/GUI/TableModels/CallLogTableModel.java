@@ -22,14 +22,14 @@ public class CallLogTableModel extends AbstractTableModel {
         data = new String[calls.size()][4];
         int i = 0;
         String[] callArray;
-        Call call = (Call)calls.pollLast();
+        Call call = calls.pollLast();
         while (call != null){
             callArray = call.getCall();
             data[i][0] = callArray[Call.CALL_DATE];
             data[i][1] = User.checkName(callArray[Call.SRC]);
             data[i][2] = User.checkName(callArray[Call.DST]);
             data[i++][3] = callArray[Call.DURATION];
-            call = (Call)calls.pollLast();
+            call = calls.pollLast();
 
         }
       }

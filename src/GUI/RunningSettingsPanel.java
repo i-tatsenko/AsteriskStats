@@ -91,7 +91,7 @@ public class RunningSettingsPanel extends JPanel {
 
     public static JTable getUsersTable(){
         return USERS_TABLE;
-    };
+    }
 
     class PanelCalendar extends JDateChooser{
         PanelCalendar(){

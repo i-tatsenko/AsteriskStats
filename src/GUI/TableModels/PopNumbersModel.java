@@ -23,7 +23,7 @@ public class PopNumbersModel extends AbstractTableModel {
             stats = (Stats)listItem;
             data[length - i][0] = User.checkName(stats.getTargetNumber());
             data[length - i][1] = String.valueOf(stats.getCallsCount());
-            data[length - i++][2] = String.valueOf((int)(stats.getDuration()));
+            data[length - i++][2] = String.valueOf((stats.getDuration()));
         }
     }
 

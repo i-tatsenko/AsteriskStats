@@ -6,6 +6,7 @@ import Statistics.Stats;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class PopNumbersPanel extends JPanel{
@@ -64,9 +65,7 @@ public class PopNumbersPanel extends JPanel{
             LinkedList<Stats> statsList = new LinkedList<Stats>();
             if ((stats == null) || (stats.length == 0)) ;
             else {
-                for(Stats temp:stats){
-                    statsList.add(temp);
-                }
+                Collections.addAll(statsList, stats);
                 model.setData(statsList);
                 this.setPreferredSize(new Dimension(PopNumbersPanel.WIDTH / 2, this.getRowCount() * this.getRowHeight()));
 
