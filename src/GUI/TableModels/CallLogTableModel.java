@@ -30,7 +30,6 @@ public class CallLogTableModel extends AbstractTableModel {
             data[i][2] = User.checkName(callArray[Call.DST]);
             data[i++][3] = callArray[Call.DURATION];
             call = calls.pollLast();
-
         }
       }
 

@@ -7,6 +7,7 @@ import GUI.TableModels.CallLogTableModel;
 import Statistics.Call;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
@@ -23,7 +24,7 @@ public class CallsTablePanel extends JScrollPane{
     private static PanelCallsTable CALLS_TABLE;
     CallsTablePanel(){
         super();
-        WIDTH = new Double(Gui.getMainWindow().getSize().width * 0.71).intValue();
+        WIDTH = new Double(Gui.getMainWindow().getSize().width * 0.69).intValue();
         HEIGHT = new Double(Gui.getMainWindow().getHeight() * 0.5).intValue();
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -37,6 +38,7 @@ public class CallsTablePanel extends JScrollPane{
         JTable table = (JTable)this.getViewport().getView();
         int height = table.getRowCount() * table.getRowHeight();
         table.setPreferredSize(new Dimension(table.getPreferredSize().width, height));
+        table.tableChanged(new TableModelEvent(table.getModel()));
     }
 
     public static CallsTablePanel getCallsTablePanel(){
@@ -112,7 +114,7 @@ public class CallsTablePanel extends JScrollPane{
         AbstractTableModel logTableModel = (AbstractTableModel)CALLS_TABLE.getModel();
         logTableModel.setData(calls);
         resizeTable();
-        callsTablePanel.update(CALLS_TABLE.getGraphics());
+
 
     }
 }

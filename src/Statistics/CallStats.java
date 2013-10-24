@@ -74,7 +74,7 @@ public  class CallStats {
                     array[i-1] = temp;
                     if (i > 2)i -= 2;
                     wasChanged = true;
-                }
+                    }
             }
         }
     }

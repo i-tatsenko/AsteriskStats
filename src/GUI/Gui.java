@@ -17,6 +17,7 @@ public  class Gui extends JFrame {
 
     private  Gui(){
         super();
+        this.setTitle("AsteriskStats");
         mainWindow = this;
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

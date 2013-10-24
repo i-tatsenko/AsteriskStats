@@ -20,9 +20,6 @@ import java.util.LinkedList;
 public class AsteriskStats {
     public static Gui MainWindow;
 	public static void main(String[] args) throws SQLException {
-       // Statistics.CallStats stats = new Statistics.CallStats(Statistics.Call.SRC, calls);
-        //stats.printStatsSortByCallsCount();
-
         try{ UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
         catch (Exception e){}
 
@@ -63,8 +60,3 @@ public class AsteriskStats {
     }
 
 }
-
-
-
-
-
