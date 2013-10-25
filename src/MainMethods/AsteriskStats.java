@@ -31,7 +31,7 @@ public class AsteriskStats {
     public static void updateInfo(){
         CallFilter cf = new CallFilter();
         cf.setSrcFilter("1__");
-        String[] period = getTimePeriod();
+        String[] period = RunningSettingsPanel.getTimePeriod();
         cf.setCallsPeriod(Statistics.PeriodToString.interval(period[0], period[1]));
         //cf.setDurationFilter(110);
         //cf.setOnlyNightCalls();
@@ -44,19 +44,6 @@ public class AsteriskStats {
 
     }
 
-    private static String[] getTimePeriod(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
-        String[] out = new String[2];
-        if (RunningSettingsPanel.getFromCheckBoxState())out[0] = dateFormat.format(RunningSettingsPanel.getFromDate());
-        else out[0] = "2013-01-01";
 
-        if (RunningSettingsPanel.getToCheckBoxState())out[1] = dateFormat.format(RunningSettingsPanel.getToDate());
-        else {
-            Calendar dateTo = Calendar.getInstance();
-            dateTo.add(Calendar.DAY_OF_MONTH, 1);
-            out[1] = dateFormat.format(dateTo.getTime());
-        }
-        return out;
-    }
 
 }

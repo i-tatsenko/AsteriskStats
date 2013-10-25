@@ -5,6 +5,7 @@ import Statistics.Call;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -12,55 +13,130 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 
 public class RunningSettingsPanel extends JPanel {
-    private static Double MINIMUM_SIZE_RATIO = 0.15;
-    private static Double SIZE_RATIO = 0.2;
-    private static Double MAXIMUM_SIZE_RATIO = 0.25;
+    public static Double SIZE_RATIO = 0.25;
     private static int PREFERRED_WIDTH;
     private static JDateChooser FROM_DATE;
     private static JDateChooser TO_DATE;
     private static JCheckBox FROM_CHECK_BOX;
     private static JCheckBox TO_CHECK_BOX;
-    private static JTable USERS_TABLE;
+    private static PanelTable USERS_TABLE;
 
     RunningSettingsPanel(){
         super();
         this.setLayout(new FlowLayout());
         this.setPreferredSize(Gui.getPreferredWidth(SIZE_RATIO));
-        this.PREFERRED_WIDTH = new Double(Gui.getPreferredWidth(SIZE_RATIO).getWidth()).intValue();
-        this.setMinimumSize(Gui.getPreferredWidth(MINIMUM_SIZE_RATIO));
-        this.setMaximumSize(Gui.getPreferredWidth(MAXIMUM_SIZE_RATIO));
-
+        PREFERRED_WIDTH = Gui.getPreferredWidth(SIZE_RATIO).width;
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        PanelLabel opisanie = new PanelLabel("Параметры выборки данных.");
-        PanelCheckbox filterStartDate = new PanelCheckbox("Фильтровать от:");
-        FROM_CHECK_BOX = filterStartDate;
-        PanelCheckbox filterEndDate = new PanelCheckbox("Фильтровать до:");
-        TO_CHECK_BOX = filterEndDate;
+        PanelLabel description = new PanelLabel("Параметры выборки данных.");
+        this.add(description);
+
+        FROM_CHECK_BOX = new PanelCheckbox("Фильтровать от:");
+        FROM_CHECK_BOX.setSelected(true);
+        this.add(FROM_CHECK_BOX);
+
         Calendar startDate = Calendar.getInstance();
         startDate.set(Calendar.DAY_OF_MONTH, 1);
-        JDateChooser fromDate = new PanelCalendar(startDate.getTime());
-        FROM_DATE = fromDate;
-        JDateChooser toDate = new PanelCalendar(Calendar.getInstance().getTime());
-        TO_DATE = toDate;
-        PanelTable users = new PanelTable();
-        users.setBackground(this.getBackground());
-        USERS_TABLE = users;
+        FROM_DATE = new PanelCalendar(startDate.getTime());
+        this.add(FROM_DATE);
 
-        this.add(opisanie);
-        this.add(filterStartDate);
-        this.add(fromDate);
-        filterStartDate.setSelected(true);
-        this.add(filterEndDate);
-        this.add(toDate);
-        this.add(new UsersPanel(users));
+        TO_CHECK_BOX = new PanelCheckbox("Фильтровать до:");
+        this.add(TO_CHECK_BOX);
+
+
+        TO_DATE = new PanelCalendar(Calendar.getInstance().getTime());
+        this.add(TO_DATE);
+
+
+        JPanel panelFilterSrc = new JPanel();
+        panelFilterSrc.setLayout(new BorderLayout());
+            JLabel labelSrc = new JLabel("Фильтр по исходящим: ");
+            panelFilterSrc.add(labelSrc, BorderLayout.WEST);
+
+
+            NumberComboBox comboSrc = new NumberComboBox();
+            panelFilterSrc.add(comboSrc, BorderLayout.CENTER);
+        panelFilterSrc.setPreferredSize(new Dimension(PREFERRED_WIDTH - 10,20));
+
+
+        JPanel panelFilterDst = new JPanel();
+        panelFilterDst.setLayout(new BorderLayout());
+
+        JLabel labelDst = new JLabel("Фильтр по назначению: ");
+
+        NumberComboBox comboDst = new NumberComboBox();
+
+
+        panelFilterDst.add(labelDst, BorderLayout.WEST);
+        panelFilterDst.add(comboDst, BorderLayout.CENTER);
+        this.add(panelFilterSrc);
+        this.add(panelFilterDst);
+
+
+
+        USERS_TABLE = new PanelTable();
+        this.add(new UsersPanel(USERS_TABLE));
 
     }
+
+    class NumberComboBox extends JComboBox<String>{
+        NumberComboBox(){
+            super();
+            this.setModel(new NumberComboBoxModel());
+        }
+
+        public String getPattern(){
+            NumberComboBoxModel model = (NumberComboBoxModel)this.getModel();
+            return model.getPattern();
+        }
+    }
+
+    class NumberComboBoxModel implements ComboBoxModel<String>{
+        String[][] data = {{"Внутренние", "Внешние", "Мобильные"},{"1__", "_____%", "0_________"}};
+        int selectedItemId = 0;
+        @Override
+        public void setSelectedItem(Object anItem) {
+            String selected = (String)anItem;
+            if (selected.equals("Внутренние"))selectedItemId = 0;
+            if (selected.equals("Внешние"))selectedItemId = 1;
+            if (selected.equals("Мобильные"))selectedItemId = 2;
+        }
+
+        @Override
+        public Object getSelectedItem() {
+            return new String(data[0][selectedItemId]);
+        }
+
+        @Override
+        public int getSize() {
+            return 3;
+        }
+
+        @Override
+        public String getElementAt(int index) {
+            return data[0][index];
+        }
+
+        @Override
+        public void addListDataListener(ListDataListener l) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void removeListDataListener(ListDataListener l) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        public String getPattern(){
+            return data[1][selectedItemId];
+        }
+    };
 
     class UsersPanel extends JScrollPane{
         UsersPanel(){
@@ -69,7 +145,7 @@ public class RunningSettingsPanel extends JPanel {
 
         UsersPanel(PanelTable table){
             super(table);
-            this.setPreferredSize(new Dimension(RunningSettingsPanel.PREFERRED_WIDTH, 500));
+            this.setPreferredSize(new Dimension(RunningSettingsPanel.PREFERRED_WIDTH - 6, 550));
         }
     }
 
@@ -153,6 +229,9 @@ public class RunningSettingsPanel extends JPanel {
             this.setModel(new UsersTableDataModel());
             this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            this.setBackground(Color.LIGHT_GRAY);
+            this.getTableHeader().setForeground(new Color(0,0,160));
+
             this.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
@@ -169,6 +248,23 @@ public class RunningSettingsPanel extends JPanel {
     public static Double getSizeRatio(){
         return SIZE_RATIO;
     }
+
+    public static String[] getTimePeriod(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
+        String[] out = new String[2];
+        if (RunningSettingsPanel.getFromCheckBoxState())out[0] = dateFormat.format(RunningSettingsPanel.getFromDate());
+        else out[0] = "2013-01-01";
+
+        if (RunningSettingsPanel.getToCheckBoxState())out[1] = dateFormat.format(RunningSettingsPanel.getToDate());
+        else {
+            Calendar dateTo = Calendar.getInstance();
+            dateTo.add(Calendar.DAY_OF_MONTH, 1);
+            out[1] = dateFormat.format(dateTo.getTime());
+        }
+        return out;
+    }
+
+
 }
 
 

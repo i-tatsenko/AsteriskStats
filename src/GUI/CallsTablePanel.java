@@ -18,26 +18,22 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class CallsTablePanel extends JScrollPane{
-    private static int WIDTH;
-    private static int HEIGHT;
     private static CallsTablePanel callsTablePanel;
     private static PanelCallsTable CALLS_TABLE;
     CallsTablePanel(){
         super();
-        WIDTH = new Double(Gui.getMainWindow().getSize().width * 0.69).intValue();
-        HEIGHT = new Double(Gui.getMainWindow().getHeight() * 0.5).intValue();
-        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.setPreferredSize(new Dimension(Gui.getPreferredWidth(1 - RunningSettingsPanel.SIZE_RATIO).width - 10, Gui.getMainWindow().getSize().height / 5 * 2));
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        PanelCallsTable callsTable = new PanelCallsTable();
-        CALLS_TABLE = callsTable;
-        this.setViewportView(callsTable);
+        CALLS_TABLE = new PanelCallsTable();
+        this.setViewportView(CALLS_TABLE);
         callsTablePanel = this;
+        System.out.println("Calls Logo = " + this.getPreferredSize());
     }
 
     public void resizeTable(){
         JTable table = (JTable)this.getViewport().getView();
         int height = table.getRowCount() * table.getRowHeight();
-        table.setPreferredSize(new Dimension(table.getPreferredSize().width, height));
+        table.setPreferredSize(new Dimension(CallsTablePanel.WIDTH - 10, height));
         table.tableChanged(new TableModelEvent(table.getModel()));
     }
 
@@ -48,8 +44,9 @@ public class CallsTablePanel extends JScrollPane{
     class PanelCallsTable extends JTable{
         PanelCallsTable(){
             super();
-            setPreferredSize(new Dimension(WIDTH, 500));
-            this.setBackground(Gui.getMainWindow().getBackground());
+            setPreferredSize(new Dimension(CallsTablePanel.WIDTH, 500));
+            this.setBackground(Color.LIGHT_GRAY);
+            this.getTableHeader().setForeground(new Color(0,0,160));
             setModel(new CallLogTableModel());
             CallsLogSorter sorter = new CallsLogSorter(this.getModel());
             this.setRowSorter(sorter);

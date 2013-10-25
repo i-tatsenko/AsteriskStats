@@ -39,8 +39,8 @@ public  class Gui extends JFrame {
 
     public static Dimension getPreferredWidth(Double screenRatio){
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int height = new Double(screenSize.getHeight() * SCREEN_RATIO).intValue();
-        int width = new Double(screenSize.getWidth() * screenRatio).intValue();
+        int height = new Double(screenSize.getHeight() * SCREEN_RATIO * screenRatio).intValue();
+        int width = new Double(screenSize.getWidth() * SCREEN_RATIO * screenRatio).intValue();
 
         return new Dimension(width, height);
     }

@@ -3,7 +3,6 @@ package GUI;
 
 import GUI.TableModels.PopNumbersModel;
 import Statistics.Stats;
-
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableModel;
@@ -20,14 +19,17 @@ public class PopNumbersPanel extends JPanel{
 
     public PopNumbersPanel(){
         super();
+        System.out.println("PopNumbersPanel = " + this.getPreferredSize());
         popNumbersPanel = this;
         SRCTable = new SRCPopNumbersTable();
         DSTTable = new DSTPopNumbersTable();
+
+        this.setPreferredSize(new Dimension(Gui.getPreferredWidth(1 - RunningSettingsPanel.SIZE_RATIO).width - 10, Gui.getMainWindow().getSize().height /5 * 3 - 25));
+
         JScrollPane SRCPane = new JScrollPane(SRCTable);
-        SRCPane.setPreferredSize(new Dimension(new Double(Gui.getMainWindow().getWidth() * 0.35).intValue(),new Double(Gui.getMainWindow().getHeight() * 0.45).intValue()));
         this.add(SRCPane);
+
         JScrollPane DSTPane = new JScrollPane(DSTTable);
-        DSTPane.setPreferredSize(new Dimension(new Double(Gui.getMainWindow().getWidth() * 0.35).intValue(),new Double(Gui.getMainWindow().getHeight() * 0.45).intValue()));
         this.add(DSTPane);
     }
 
@@ -83,6 +85,9 @@ public class PopNumbersPanel extends JPanel{
         PopNumbersTable(){
             super();
             this.setPreferredSize(new Dimension(1000, 1000));
+            this.setBackground(Color.LIGHT_GRAY);
+            this.getTableHeader().setForeground(new Color(0,0,160));
+
         }
 
         public void setData(Stats[] stats){
