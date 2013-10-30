@@ -30,20 +30,26 @@ public class AsteriskStats {
 
     public static void updateInfo(){
         CallFilter cf = new CallFilter();
-        cf.setSrcFilter("1__");
         String[] period = RunningSettingsPanel.getTimePeriod();
         cf.setCallsPeriod(Statistics.PeriodToString.interval(period[0], period[1]));
+        setCallFilterSrcDst(cf);
+
         //cf.setDurationFilter(110);
         //cf.setOnlyNightCalls();
         //cf.setLastappFilter("Queue");
-        //cf.setDstFilter("333");
 
         ResultSet rs = DbProcessor.getConnector().outQuery("src, dst, lastapp, billsec, calldate", "cdr", cf.toString());
         LinkedList<Statistics.Call> calls = Statistics.Call.callsFabric(rs);
         MainWindow.setData(calls);
-
     }
 
+    private static void setCallFilterSrcDst(CallFilter cf){
+        RunningSettingsPanel.NumberComboBox comboSrc = RunningSettingsPanel.getCOMBO_SRC();
+        RunningSettingsPanel.NumberComboBox comboDst = RunningSettingsPanel.getCOMBO_DST();
+
+        if (!comboSrc.getPattern().equals("%%")) cf.setSrcFilter(comboSrc.getPattern());
+        if (!comboDst.getPattern().equals("%%")) cf.setDstFilter(comboDst.getPattern());
+    }
 
 
 }

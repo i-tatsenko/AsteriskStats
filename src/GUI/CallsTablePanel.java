@@ -27,7 +27,6 @@ public class CallsTablePanel extends JScrollPane{
         CALLS_TABLE = new PanelCallsTable();
         this.setViewportView(CALLS_TABLE);
         callsTablePanel = this;
-        System.out.println("Calls Logo = " + this.getPreferredSize());
     }
 
     public void resizeTable(){

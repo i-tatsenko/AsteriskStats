@@ -1,6 +1,7 @@
 package GUI;
 
 import GUI.TableModels.UsersTableDataModel;
+import MainMethods.AsteriskStats;
 import Statistics.Call;
 import com.toedter.calendar.JDateChooser;
 
@@ -26,6 +27,8 @@ public class RunningSettingsPanel extends JPanel {
     private static JCheckBox FROM_CHECK_BOX;
     private static JCheckBox TO_CHECK_BOX;
     private static PanelTable USERS_TABLE;
+    private static NumberComboBox COMBO_SRC;
+    private static NumberComboBox COMBO_DST;
 
     RunningSettingsPanel(){
         super();
@@ -57,38 +60,43 @@ public class RunningSettingsPanel extends JPanel {
         JPanel panelFilterSrc = new JPanel();
         panelFilterSrc.setLayout(new BorderLayout());
             JLabel labelSrc = new JLabel("Фильтр по исходящим: ");
+            labelSrc.setPreferredSize(new Dimension(130, labelSrc.getPreferredSize().height));
             panelFilterSrc.add(labelSrc, BorderLayout.WEST);
 
 
-            NumberComboBox comboSrc = new NumberComboBox();
-            panelFilterSrc.add(comboSrc, BorderLayout.CENTER);
-        panelFilterSrc.setPreferredSize(new Dimension(PREFERRED_WIDTH - 10,20));
+            COMBO_SRC = new NumberComboBox();
+            panelFilterSrc.add(COMBO_SRC, BorderLayout.CENTER);
+        panelFilterSrc.setPreferredSize(new Dimension(PREFERRED_WIDTH - 10, 20));
+
+        this.add(panelFilterSrc);
 
 
         JPanel panelFilterDst = new JPanel();
         panelFilterDst.setLayout(new BorderLayout());
+            JLabel labelDst = new JLabel("Фильтр по назначению: ");
+            labelDst.setPreferredSize(new Dimension(130, labelDst.getPreferredSize().height));
+            panelFilterDst.add(labelDst, BorderLayout.WEST);
 
-        JLabel labelDst = new JLabel("Фильтр по назначению: ");
-
-        NumberComboBox comboDst = new NumberComboBox();
-
-
-        panelFilterDst.add(labelDst, BorderLayout.WEST);
-        panelFilterDst.add(comboDst, BorderLayout.CENTER);
-        this.add(panelFilterSrc);
+            COMBO_DST = new NumberComboBox();
+            panelFilterDst.add(COMBO_DST, BorderLayout.CENTER);
+        panelFilterDst.setPreferredSize(new Dimension(PREFERRED_WIDTH - 10,20));
         this.add(panelFilterDst);
-
-
 
         USERS_TABLE = new PanelTable();
         this.add(new UsersPanel(USERS_TABLE));
 
     }
 
-    class NumberComboBox extends JComboBox<String>{
+    public class NumberComboBox extends JComboBox<String>{
         NumberComboBox(){
             super();
             this.setModel(new NumberComboBoxModel());
+            this.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getActionCommand().equals("comboBoxChanged")) AsteriskStats.updateInfo();
+                }
+            });
         }
 
         public String getPattern(){
@@ -98,7 +106,7 @@ public class RunningSettingsPanel extends JPanel {
     }
 
     class NumberComboBoxModel implements ComboBoxModel<String>{
-        String[][] data = {{"Внутренние", "Внешние", "Мобильные"},{"1__", "_____%", "0_________"}};
+        String[][] data = {{"Внутренние", "Внешние", "Мобильные", "Все"},{"1__", "_____%", "0_________", "%%"}};
         int selectedItemId = 0;
         @Override
         public void setSelectedItem(Object anItem) {
@@ -106,6 +114,7 @@ public class RunningSettingsPanel extends JPanel {
             if (selected.equals("Внутренние"))selectedItemId = 0;
             if (selected.equals("Внешние"))selectedItemId = 1;
             if (selected.equals("Мобильные"))selectedItemId = 2;
+            if (selected.equals("Все"))selectedItemId = 3;
         }
 
         @Override
@@ -115,7 +124,7 @@ public class RunningSettingsPanel extends JPanel {
 
         @Override
         public int getSize() {
-            return 3;
+            return data[0].length;
         }
 
         @Override
@@ -125,12 +134,11 @@ public class RunningSettingsPanel extends JPanel {
 
         @Override
         public void addListDataListener(ListDataListener l) {
-            //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
         public void removeListDataListener(ListDataListener l) {
-            //To change body of implemented methods use File | Settings | File Templates.
+
         }
 
         public String getPattern(){
@@ -155,6 +163,14 @@ public class RunningSettingsPanel extends JPanel {
 
     public static Date getToDate(){
         return TO_DATE.getDate();
+    }
+
+    public static NumberComboBox getCOMBO_SRC(){
+        return COMBO_SRC;
+    }
+
+    public static NumberComboBox getCOMBO_DST(){
+        return COMBO_DST;
     }
 
     public static boolean getFromCheckBoxState(){
