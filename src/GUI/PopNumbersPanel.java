@@ -19,18 +19,20 @@ public class PopNumbersPanel extends JPanel{
 
     public PopNumbersPanel(){
         super();
-        System.out.println("PopNumbersPanel = " + this.getPreferredSize());
+        this.setLayout(new BorderLayout());
         popNumbersPanel = this;
         SRCTable = new SRCPopNumbersTable();
         DSTTable = new DSTPopNumbersTable();
 
-        this.setPreferredSize(new Dimension(Gui.getPreferredWidth(1 - RunningSettingsPanel.SIZE_RATIO).width - 10, Gui.getMainWindow().getSize().height /5 * 3 - 25));
+        this.setPreferredSize(new Dimension(Gui.getPreferredWidth(1 - RunningSettingsPanel.SIZE_RATIO).width - 10, Gui.getMainWindow().getSize().height / 5 * 3 - 30));
 
         JScrollPane SRCPane = new JScrollPane(SRCTable);
-        this.add(SRCPane);
+        SRCPane.setPreferredSize(new Dimension(this.getPreferredSize().width / 2 - 1, 1000));
+        this.add(SRCPane, BorderLayout.WEST);
 
         JScrollPane DSTPane = new JScrollPane(DSTTable);
-        this.add(DSTPane);
+        DSTPane.setPreferredSize(new Dimension(this.getPreferredSize().width / 2 - 1, 1000));
+        this.add(DSTPane, BorderLayout.EAST);
     }
 
     public static PopNumbersPanel getPopNumbersPanel(){
@@ -84,7 +86,7 @@ public class PopNumbersPanel extends JPanel{
 
         PopNumbersTable(){
             super();
-            this.setPreferredSize(new Dimension(1000, 1000));
+            this.setPreferredSize(new Dimension(500, 1000));
             this.setBackground(Color.LIGHT_GRAY);
             this.getTableHeader().setForeground(new Color(0,0,160));
 
@@ -97,7 +99,8 @@ public class PopNumbersPanel extends JPanel{
             else {
                 Collections.addAll(statsList, stats);
                 model.setData(statsList);
-                this.setPreferredSize(new Dimension(PopNumbersPanel.WIDTH / 2, this.getRowCount() * this.getRowHeight()));
+                this.setPreferredSize(new Dimension(PopNumbersPanel.WIDTH / 5, this.getRowCount() * this.getRowHeight()));
+
 
                 this.tableChanged(new TableModelEvent(this.getModel()));
             }
